@@ -1,0 +1,22 @@
+{
+  "dependencies": {
+    "@hexlet/chat-server": "^2.0.4"
+  },
+  "name": "@hexlet/code",
+  "version": "1.0.0",
+  "description": "[![Actions Status](https://github.com/maaladina/frontend-project-12/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/maaladina/frontend-project-12/actions)",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/maaladina/frontend-project-12.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/maaladina/frontend-project-12/issues"
+  },
+  "homepage": "https://github.com/maaladina/frontend-project-12#readme"
+}
