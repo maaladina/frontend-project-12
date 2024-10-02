@@ -1,25 +1,46 @@
-import React from 'react';
-import { Formik, Form, Field } from 'formik';
+import axios from 'axios';
+import React, { useEffect, useRef, useState } from 'react';
+import { useFormik } from 'formik';
+import { Button, Form } from 'react-bootstrap';
+import { useLocation, useNavigate } from 'react-router-dom';
+import useAuth from '../hooks/index.jsx';
 import login from '../images/hexletImage.jpg';
-import * as Yup from 'yup';
-
-const LoginSchema = Yup.object().shape({
-    username: Yup.string().required('Обязательное поле'),
-    password: Yup.string().min(6, 'Минимум 6 букв').required('Обязательное поле'),
-});
-
-const renderErrors = (errors, touched, id) => {
-    if (errors[id] && touched[id]) {
-        document.getElementById(id).classList.add('is-invalid');
-        return <div className="text-danger">{errors[id]}</div>
-    }
-    if (document.getElementById(id)) {
-        document.getElementById(id).classList.remove('is-invalid');
-    }
-    return null;
-};
 
 const Login = () => {
+    const auth = useAuth();
+    const [authFailed, setAuthFailed] = useState(false);
+    const inputRef = useRef();
+    const location = useLocation();
+    const navigate = useNavigate();
+    useEffect(() => {
+        inputRef.current.focus();
+    }, []);
+
+    const formik = useFormik({
+        initialValues: {
+            username: '',
+            password: '',
+        },
+        onSubmit: async (values) => {
+            setAuthFailed(false);
+            try {
+                const res = await axios.post('/api/v1/login', values);
+                localStorage.setItem('userId', JSON.stringify(res.data));
+                auth.logIn();
+                const { from } = location.state;
+                navigate(from);
+            } catch (err) {
+                formik.setSubmitting(false);
+                if (err.isAxiosError && err.response.status === 401) {
+                    setAuthFailed(true);
+                    inputRef.current.select();
+                    return;
+                }
+                throw err;
+            }
+        },
+    });
+
     return (
         <div className="h-100">
             <div className="h-100" id="chat">
@@ -27,7 +48,6 @@ const Login = () => {
                     <nav className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
                         <div className="container">
                             <a className="navbar-brand" href="/">Hexlet Chat</a>
-                            <button type="button" className="btn btn-primary">Выйти</button>
                         </div>
                     </nav>
                     <div className="container-fluid h-100">
@@ -39,46 +59,44 @@ const Login = () => {
                                             <img src={login} className="rounded-circle" alt="Войти" />
                                         </div>
 
-                                        <Formik
-                                            initialValues={{ username: '', password: '' }}
-                                            validationSchema={LoginSchema}
-                                            onSubmit={(values) => {
-                                                console.log(values);
-                                            }}
-                                        >
-                                            {({ errors, touched }) => (
-                                                <Form className="col-12 col-md-6 mt-3 mt-md-0">
-                                                    <h1 className="text-center mb-4">Войти</h1>
-                                                    <div className="form-floating mb-3">
 
-                                                        <Field
-                                                            type="username"
-                                                            name="username"
-                                                            autoComplete="username"
-                                                            placeholder="Ваш ник"
-                                                            id="username"
-                                                            className="form-control" />
-                                                        {renderErrors(errors, touched, 'username')}
-                                                        <label htmlFor="username">Ваш ник</label>
-                                                    </div>
-                                                    <div className="form-floating mb-4">
-                                                        <Field
-                                                            name="password"
-                                                            autoComplete="current-password"
-                                                            placeholder="Пароль"
-                                                            type="password"
-                                                            id="password"
-                                                            className="form-control" />
-                                                        {renderErrors(errors, touched, 'password')}
-                                                        <label className="form-label" htmlFor="password">Пароль</label>
-                                                    </div>
-                                                    <button type="submit" className="w-100 mb-3 btn btn-outline-primary">
-                                                        Войти
-                                                    </button>
-                                                </Form>
-                                            )}
-                                        </Formik>
-
+                                        <Form onSubmit={formik.handleSubmit} className="col-12 col-md-6 mt-3 mt-md-0">
+                                            <h1 className="text-center mb-4">Войти</h1>
+                                            <fieldset>
+                                                <Form.Group className="form-floating mb-3">
+                                                    <Form.Label htmlFor="username">Ваш ник</Form.Label>
+                                                    <Form.Control
+                                                        onChange={formik.handleChange}
+                                                        onBlur={formik.handleBlur}
+                                                        value={formik.values.username}
+                                                        placeholder="Ваш ник"
+                                                        name="username"
+                                                        id="username"
+                                                        autoComplete="username"
+                                                        isInvalid={authFailed}
+                                                        required
+                                                        ref={inputRef}
+                                                    />
+                                                </Form.Group>
+                                                <Form.Group className="form-floating mb-3">
+                                                    <Form.Label htmlFor="password">Пароль</Form.Label>
+                                                    <Form.Control
+                                                        type="password"
+                                                        onChange={formik.handleChange}
+                                                        onBlur={formik.handleBlur}
+                                                        value={formik.values.password}
+                                                        placeholder="Пароль"
+                                                        name="password"
+                                                        id="password"
+                                                        autoComplete="current-password"
+                                                        isInvalid={authFailed}
+                                                        required
+                                                    />
+                                                    <Form.Control.Feedback type="invalid">the username or password is incorrect</Form.Control.Feedback>
+                                                </Form.Group>
+                                                <Button type="submit" className="w-100 mb-3 btn btn-outline-primary" variant="outline-primary">Войти</Button>
+                                            </fieldset>
+                                        </Form>
                                     </div>
                                     <div className="card-footer p-4">
                                         <div className="text-center"><span>Нет аккаунта?</span> <a href="/signup">Регистрация</a></div>
