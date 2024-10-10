@@ -9,6 +9,7 @@ import {
 } from 'react-router-dom';
 import NotFound from './components/NotFound';
 import Login from './components/Login';
+import HomePage from './components/HomePage.jsx';
 import './App.css';
 
 import AuthContext from './contexts/index.jsx';
@@ -52,7 +53,7 @@ function App() {
                         path="/"
                         element={(
                             <PrivateRoute>
-                                <null />
+                                <HomePage />
                             </PrivateRoute>
                         )}
                     />
