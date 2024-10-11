@@ -3,6 +3,7 @@ import axios from 'axios';
 import Header from './Header';
 import { useSelector, useDispatch } from 'react-redux';
 import { setChannels } from '../slices/channelsSlice.js';
+import { setMessages } from '../slices/messagesSlice.js';
 import Channel from './Channel.jsx';
 
 const getAuthHeader = () => {
@@ -17,6 +18,13 @@ const HomePage = () => {
     const channels = useSelector((state) => state.channels.channels);
     const activeChannelId = useSelector((state) => state.channels.activeChannelId);
     const activeChannel = channels.find((channel) => channel.id == activeChannelId);
+    const messages = useSelector((state) => state.messages.messages);
+    const activeMessages = [];
+    messages.forEach((message) => {
+        if (message.channelId == activeChannelId) {
+            activeMessages.push(message);
+        }
+    })
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -24,7 +32,9 @@ const HomePage = () => {
             const newData = await axios.get('/api/v1/channels', { headers: getAuthHeader() });
             const newChannels = newData.data;
             dispatch(setChannels({ newChannels }));
-            console.log(activeChannel);
+            const newData2 = await axios.get('/api/v1/messages', { headers: getAuthHeader() })
+            const newMessages = newData2.data;
+            dispatch(setMessages({ newMessages }));
         }
         getChannels();
     }, []);
@@ -57,9 +67,11 @@ const HomePage = () => {
                                 <div className="d-flex flex-column h-100">
                                     <div className="bg-light mb-4 p-3 shadow-sm small">
                                         <p className="m-0"><b># {activeChannel ? activeChannel.name : null}</b></p>
-                                        <span className="text-muted">0 сообщений</span>
+                                        <span className="text-muted">{activeMessages.length} сообщений</span>
                                     </div>
                                     <div id="messages-box" className="chat-messages overflow-auto px-5 ">
+                                        {activeMessages.map((message) => <div className="text-break mb-2"><b>{message.username}</b>: {message.body}</div>)}
+
                                     </div>
                                     <div className="mt-auto px-5 py-3">
                                         <form noValidate="" className="py-1 border rounded-2">
