@@ -10,6 +10,7 @@ import {
 import NotFound from './components/NotFound';
 import Login from './components/Login';
 import HomePage from './components/HomePage.jsx';
+import SignUp from './components/SignUp.jsx';
 import './App.css';
 
 import AuthContext from './contexts/index.jsx';
@@ -59,6 +60,7 @@ function App() {
                     />
                     <Route path="*" element={<NotFound />} />
                     <Route path="/login" element={<Login />} />
+                    <Route path="/signup" element={<SignUp />} />
                 </Routes>
             </Router>
         </AuthProvider>
