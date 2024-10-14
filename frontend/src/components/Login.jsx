@@ -64,7 +64,6 @@ const Login = () => {
                                             <h1 className="text-center mb-4">Войти</h1>
                                             <fieldset>
                                                 <Form.Group className="form-floating mb-3">
-                                                    <Form.Label htmlFor="username">Ваш ник</Form.Label>
                                                     <Form.Control
                                                         onChange={formik.handleChange}
                                                         onBlur={formik.handleBlur}
@@ -77,9 +76,9 @@ const Login = () => {
                                                         required
                                                         ref={inputRef}
                                                     />
+                                                    <Form.Label htmlFor="username">Ваш ник</Form.Label>
                                                 </Form.Group>
                                                 <Form.Group className="form-floating mb-3">
-                                                    <Form.Label htmlFor="password">Пароль</Form.Label>
                                                     <Form.Control
                                                         type="password"
                                                         onChange={formik.handleChange}
@@ -92,6 +91,7 @@ const Login = () => {
                                                         isInvalid={authFailed}
                                                         required
                                                     />
+                                                    <Form.Label htmlFor="password">Пароль</Form.Label>
                                                     <Form.Control.Feedback type="invalid">the username or password is incorrect</Form.Control.Feedback>
                                                 </Form.Group>
                                                 <Button type="submit" className="w-100 mb-3 btn btn-outline-primary" variant="outline-primary">Войти</Button>

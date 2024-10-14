@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useState } from 'react';
-import { Formik, Form, Field } from 'formik';
+import { useFormik } from 'formik';
+import { Button, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import useAuth from '../hooks/index.jsx';
 import signup from '../images/signUp.jpg';
@@ -17,21 +18,33 @@ const SignupSchema = Yup.object().shape({
     confirmPassword: Yup.string().oneOf([Yup.ref('password'), null], 'Пароли должны совпадать'),
 });
 
-const renderErrors = (errors, touched, id) => {
-    if (errors[id] && touched[id]) {
-        document.getElementById(id).classList.add('is-invalid');
-        return <div placement="right" className="invalid-tooltip">{errors[id]}</div>
-    }
-    if (document.getElementById(id)) {
-        document.getElementById(id).classList.remove('is-invalid');
-    }
-    return null;
-};
-
 const SignUp = () => {
     const [regFailed, setRegFailed] = useState(false);
     const navigate = useNavigate();
     const auth = useAuth();
+
+    const formik = useFormik({
+        initialValues: {
+            username: '',
+            password: '',
+            confirmPassword: '',
+        },
+        validationSchema: SignupSchema,
+        onSubmit: async (values) => {
+            setRegFailed(false);
+            try {
+                const res = await axios.post('/api/v1/signup', values);
+                localStorage.setItem('userId', JSON.stringify(res.data));
+                auth.logIn();
+                navigate('/');
+            } catch (e) {
+                if (e.response.status === 409) {
+                    setRegFailed(true);
+                }
+                console.log(e);
+            }
+        }
+    })
 
     return (
         <div className="h-100">
@@ -50,67 +63,76 @@ const SignUp = () => {
                                         <img src={signup} className="rounded-circle" alt="Регистрация" />
                                     </div>
 
-                                    <Formik
-                                        initialValues={{
-                                            username: '',
-                                            password: '',
-                                            confirmPassword: '',
-                                        }}
-                                        validationSchema={SignupSchema}
-                                        onSubmit={async (values) => {
-                                            setRegFailed(false);
-                                            try {
-                                                const res = await axios.post('/api/v1/signup', values);
-                                                localStorage.setItem('userId', JSON.stringify(res.data));
-                                                auth.logIn();
-                                                navigate('/');
-                                            } catch (err) {
-                                                setRegFailed(true);
-                                                throw err;
+                                    <Form onSubmit={formik.handleSubmit} className="w-50">
+                                        <h1 className="text-center mb-4">Регистрация</h1>
+                                        <Form.Group className="form-floating mb-3">
+                                            <Form.Control
+                                                type="text"
+                                                placeholder="От 3 до 20 символов"
+                                                name="username"
+                                                autoComplete="username"
+                                                id="username"
+                                                onChange={formik.handleChange}
+                                                onBlur={formik.handleBlur}
+                                                value={formik.values.username}
+                                                isInvalid={formik.touched.username
+                                                    && (!!formik.errors.username || regFailed)}
+                                            />
+                                            <Form.Label htmlFor="username">Имя пользователя</Form.Label>
+                                            <Form.Control.Feedback type="invalid">
+                                                {formik.errors.username}
+                                            </Form.Control.Feedback>
+                                        </Form.Group>
+
+                                        <Form.Group className="form-floating mb-3">
+                                            <Form.Control
+                                                placeholder="Не менее 6 символов"
+                                                name="password"
+                                                aria-describedby="passwordHelpBlock"
+                                                autoComplete="new-password"
+                                                type="password"
+                                                id="password"
+                                                onChange={formik.handleChange}
+                                                onBlur={formik.handleBlur}
+                                                value={formik.values.password}
+                                                isInvalid={formik.touched.password
+                                                    && (!!formik.errors.password || regFailed)}
+                                            />
+                                            <Form.Label htmlFor="password">Пароль</Form.Label>
+                                            <Form.Control.Feedback type="invalid">
+                                                {formik.errors.password}
+                                            </Form.Control.Feedback>
+                                        </Form.Group>
+
+                                        <Form.Group className="form-floating mb-4">
+                                            <Form.Control
+                                                placeholder="Пароли должны совпадать"
+                                                name="confirmPassword"
+                                                autoComplete="new-password"
+                                                type="password"
+                                                id="confirmPassword"
+                                                onChange={formik.handleChange}
+                                                onBlur={formik.handleBlur}
+                                                value={formik.values.confirmPassword}
+                                                isInvalid={formik.touched.confirmPassword
+                                                    && (!!formik.errors.confirmPassword || regFailed)}
+                                            />
+                                            <Form.Label htmlFor="confirmPassword">Подтвердите пароль</Form.Label>
+                                            {regFailed ?
+                                                <Form.Control.Feedback type="invalid">
+                                                    Такой пользователь уже существует
+                                                </Form.Control.Feedback> :
+
+                                                <Form.Control.Feedback type="invalid">
+                                                    {formik.errors.confirmPassword}
+                                                </Form.Control.Feedback>
                                             }
-                                        }}
-                                    >
-                                        {({ errors, touched }) => (
-                                            <Form className="w-50">
-                                                <h1 className="text-center mb-4">Регистрация</h1>
-                                                <div className="form-floating mb-3">
-                                                    <Field
-                                                        placeholder="От 3 до 20 символов"
-                                                        name="username"
-                                                        autoComplete="username"
-                                                        id="username"
-                                                        className="form-control" />
-                                                    <label className="form-label" htmlFor="username">Имя пользователя</label>
-                                                    {renderErrors(errors, touched, 'username')}
-                                                </div>
-                                                <div className="form-floating mb-3">
-                                                    <Field
-                                                        placeholder="Не менее 6 символов"
-                                                        name="password"
-                                                        aria-describedby="passwordHelpBlock"
-                                                        autoComplete="new-password"
-                                                        type="password"
-                                                        id="password"
-                                                        className="form-control" />
-                                                    {renderErrors(errors, touched, 'password')}
-                                                    {regFailed ? <div placement="right" className="invalid-tooltip">Такой пользователь уже существует</div> : null}
-                                                    <label className="form-label" htmlFor="password">Пароль</label>
-                                                </div>
-                                                <div className="form-floating mb-4">
-                                                    <Field
-                                                        placeholder="Пароли должны совпадать"
-                                                        name="confirmPassword"
-                                                        autoComplete="new-password"
-                                                        type="password"
-                                                        id="confirmPassword"
-                                                        className="form-control" />
-                                                    {renderErrors(errors, touched, 'confirmPassword')}
-                                                    <label className="form-label" htmlFor="confirmPassword">Подтвердите пароль</label>
-                                                </div>
-                                                <button type="submit" className="w-100 btn btn-outline-primary">Зарегистрироваться</button>
-                                            </Form>
-                                        )}
-                                    </Formik>
+
+                                        </Form.Group>
+
+                                        <button type="submit" className="w-100 btn btn-outline-primary">Зарегистрироваться</button>
+                                    </Form>
+
                                 </div>
                             </div>
                             </div>
