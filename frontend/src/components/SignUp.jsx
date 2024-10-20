@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import { useFormik } from 'formik';
 import { Button, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import { setUser } from '../slices/authSlice.js';
+import { useDispatch } from 'react-redux';
 import useAuth from '../hooks/index.jsx';
 import signup from '../images/signUp.jpg';
 import * as Yup from 'yup';
@@ -22,6 +24,7 @@ const SignUp = () => {
     const [regFailed, setRegFailed] = useState(false);
     const navigate = useNavigate();
     const auth = useAuth();
+    const dispatch = useDispatch();
 
     const formik = useFormik({
         initialValues: {
@@ -35,6 +38,8 @@ const SignUp = () => {
             try {
                 const res = await axios.post('/api/v1/signup', values);
                 localStorage.setItem('userId', JSON.stringify(res.data));
+                const user = res.data;
+                dispatch(setUser({ user }));
                 auth.logIn();
                 navigate('/');
             } catch (e) {

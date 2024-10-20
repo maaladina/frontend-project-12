@@ -3,6 +3,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useFormik } from 'formik';
 import { Button, Form } from 'react-bootstrap';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { setUser } from '../slices/authSlice.js';
+import { useDispatch } from 'react-redux';
 import useAuth from '../hooks/index.jsx';
 import login from '../images/hexletImage.jpg';
 
@@ -12,6 +14,8 @@ const Login = () => {
     const inputRef = useRef();
     const location = useLocation();
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+
     useEffect(() => {
         inputRef.current.focus();
     }, []);
@@ -26,6 +30,8 @@ const Login = () => {
             try {
                 const res = await axios.post('/api/v1/login', values);
                 localStorage.setItem('userId', JSON.stringify(res.data));
+                const user = res.data;
+                dispatch(setUser({ user }));
                 auth.logIn();
                 const { from } = location.state;
                 navigate(from);
