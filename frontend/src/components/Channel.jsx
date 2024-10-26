@@ -26,7 +26,7 @@ const Channel = ({ channel, activeChannelId }) => {
             <li className="nav-item w-100">
                 <Dropdown className="w-100" as={ButtonGroup}>
                     <button type="button" className={buttonCLass} id={channel.id} onClick={handleClick}>
-                        <span className="me-1">#</span>{channel.name}
+                        <span className="me-1"># </span>{channel.name}
                     </button>
                     <DropdownButton variant={channel.id == activeChannelId ? 'secondary rounded-0' : 'light rounded-0'}
                         title="">
