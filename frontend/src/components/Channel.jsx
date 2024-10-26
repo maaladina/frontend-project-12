@@ -12,9 +12,11 @@ const Channel = ({ channel, activeChannelId }) => {
         'w-100': true,
         'rounded-0': true,
         'text-start': true,
+        'text-truncate': true,
         'btn-secondary': channel.id == activeChannelId
     }
     )
+
 
     const handleClick = (e) => {
         const activeChannelId = e.target.id;
@@ -24,7 +26,7 @@ const Channel = ({ channel, activeChannelId }) => {
     if (channel.removable) {
         return (
             <li className="nav-item w-100">
-                <Dropdown className="w-100" as={ButtonGroup}>
+                <Dropdown className="w-100 d-flex show" as={ButtonGroup}>
                     <button type="button" className={buttonCLass} id={channel.id} onClick={handleClick}>
                         <span className="me-1"># </span>{channel.name}
                     </button>
