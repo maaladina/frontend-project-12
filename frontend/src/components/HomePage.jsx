@@ -26,6 +26,7 @@ const getAuthHeader = () => {
 const socket = io();
 
 const HomePage = () => {
+    const [sendFailed, setSendFailed] = useState(false);
     const channels = useSelector((state) => state.channels.channels);
     const activeChannelId = useSelector((state) => state.channels.activeChannelId);
     const activeChannel = channels.find((channel) => channel.id == activeChannelId);
@@ -89,6 +90,7 @@ const HomePage = () => {
             body: '',
         },
         onSubmit: async (values) => {
+            setSendFailed(false);
             try {
                 const newMessage = { body: values.body, channelId: activeChannelId, username };
                 const res = await axios.post('/api/v1/messages', newMessage, { headers: getAuthHeader() });
@@ -96,6 +98,7 @@ const HomePage = () => {
                 formik.values.body = '';
                 inputRef.current.select();
             } catch (e) {
+                setSendFailed(true);
                 console.log(e);
             }
         }
@@ -147,6 +150,7 @@ const HomePage = () => {
                                                         placeholder="Введите сообщение..."
                                                         className="border-0 p-0 ps-2 form-control"
                                                         ref={inputRef}
+                                                        isInvalid={sendFailed}
                                                         value={formik.values.body} />
                                                     <Button type="submit" disabled="" className="btn btn-group-vertical">
                                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="20" height="20" fill="currentColor">
