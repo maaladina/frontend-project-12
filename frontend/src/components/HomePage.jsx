@@ -9,6 +9,7 @@ import Channel from './Channel.jsx';
 import AddChannel from './modals/AddChannel.jsx';
 import RemoveChannel from './modals/RemoveChannel.jsx';
 import RenameChannel from './modals/RenameChannel.jsx';
+import routes from '../routes.js';
 
 
 import { useFormik } from 'formik';
@@ -57,10 +58,10 @@ const HomePage = () => {
 
     useEffect(() => {
         const getChannels = async () => {
-            const newData = await axios.get('/api/v1/channels', { headers: getAuthHeader() });
+            const newData = await axios.get(routes.channelsPath(), { headers: getAuthHeader() });
             const newChannels = newData.data;
             dispatch(setChannels({ newChannels }));
-            const newData2 = await axios.get('/api/v1/messages', { headers: getAuthHeader() })
+            const newData2 = await axios.get(routes.messagesPath(), { headers: getAuthHeader() })
             const newMessages = newData2.data;
             dispatch(setMessages({ newMessages }));
             inputRef.current.focus();
@@ -93,7 +94,7 @@ const HomePage = () => {
             setSendFailed(false);
             try {
                 const newMessage = { body: values.body, channelId: activeChannelId, username };
-                const res = await axios.post('/api/v1/messages', newMessage, { headers: getAuthHeader() });
+                const res = await axios.post(routes.messagesPath(), newMessage, { headers: getAuthHeader() });
                 // dispatch(addMessage({ newMessage: res.data }));
                 formik.values.body = '';
                 inputRef.current.select();

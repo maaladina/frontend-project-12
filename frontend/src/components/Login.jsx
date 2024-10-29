@@ -7,12 +7,14 @@ import { setUser } from '../slices/authSlice.js';
 import { useDispatch } from 'react-redux';
 import useAuth from '../hooks/index.jsx';
 import login from '../images/hexletImage.jpg';
+import routes from '../routes.js';
 
 const Login = () => {
     const auth = useAuth();
     const [authFailed, setAuthFailed] = useState(false);
     const inputRef = useRef();
     const location = useLocation();
+    const { from } = location.state;
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
@@ -28,12 +30,11 @@ const Login = () => {
         onSubmit: async (values) => {
             setAuthFailed(false);
             try {
-                const res = await axios.post('/api/v1/login', values);
+                const res = await axios.post(routes.loginPath(), values);
                 localStorage.setItem('userId', JSON.stringify(res.data));
                 const user = res.data;
                 dispatch(setUser({ user }));
                 auth.logIn();
-                const { from } = location.state;
                 navigate(from);
             } catch (err) {
                 formik.setSubmitting(false);

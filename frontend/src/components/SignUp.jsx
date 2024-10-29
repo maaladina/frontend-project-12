@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux';
 import useAuth from '../hooks/index.jsx';
 import signup from '../images/signUp.jpg';
 import * as Yup from 'yup';
+import routes from '../routes.js';
 
 const SignupSchema = Yup.object().shape({
     username: Yup.string()
@@ -36,7 +37,7 @@ const SignUp = () => {
         onSubmit: async (values) => {
             setRegFailed(false);
             try {
-                const res = await axios.post('/api/v1/signup', values);
+                const res = await axios.post(routes.signUpPath(), values);
                 localStorage.setItem('userId', JSON.stringify(res.data));
                 const user = res.data;
                 dispatch(setUser({ user }));

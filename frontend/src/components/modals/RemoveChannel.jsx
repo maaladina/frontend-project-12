@@ -4,13 +4,14 @@ import { Modal, Button } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { hideModal } from "../../slices/modalSlice";
 import { removeChannel } from "../../slices/channelsSlice";
+import routes from "../../routes";
 
 const RemoveChannel = ({ item }) => {
     const dispatch = useDispatch();
     const token = useSelector((state) => state.auth.token);
 
     const handleRemove = async () => {
-        await axios.delete(`/api/v1/channels/${item.id}`, {
+        await axios.delete(routes.channelPath(item.id), {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
