@@ -42,7 +42,6 @@ const AddChannel = () => {
                 const newChannel = values;
                 const res = await axios.post('/api/v1/channels', newChannel, { headers: { Authorization: `Bearer ${token}` } });
                 const newChannelRes = res.data;
-                dispatch(addChannel({ newChannel: newChannelRes }));
                 dispatch(setActiveChannelId({ activeChannelId: newChannelRes.id }));
                 dispatch(hideModal())
             } catch (e) {

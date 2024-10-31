@@ -3,20 +3,15 @@ import { I18nextProvider, initReactI18next } from 'react-i18next';
 import App from './App';
 import resources from './locales/index.js';
 import React, { useState } from 'react';
-import {
-    BrowserRouter as Router,
-    Routes,
-    Route,
-    Link,
-    Navigate,
-    useLocation,
-} from 'react-router-dom';
 import './App.css';
 import AuthContext from './contexts/index.jsx';
 import useAuth from './hooks/index.jsx';
 import { Provider } from 'react-redux';
 import store from './slices/index.js';
 import { io } from 'socket.io-client'
+import { addMessage } from './slices/messagesSlice.js';
+import { addChannel, removeChannel } from './slices/channelsSlice.js';
+
 
 const AuthProvider = ({ children }) => {
     const [loggedIn, setLoggedIn] = useState(localStorage.getItem('userId'));
@@ -43,6 +38,25 @@ const init = async () => {
             resources,
             fallbackLng: 'ru',
         });
+
+    const { dispatch } = store;
+    const socket = io();
+    socket.on('newMessage', (...args) => {
+        args.forEach((arg) => {
+            dispatch(addMessage({ newMessage: arg }))
+        });
+    });
+    socket.on('newChannel', (...args) => {
+        args.forEach((arg) => {
+            dispatch(addChannel({ newChannel: arg }))
+        });
+    });
+    socket.on('removeChannel', (...args) => {
+        args.forEach((arg) => {
+            dispatch(removeChannel({ channel: arg }))
+        });
+    });
+
 
     return (
 

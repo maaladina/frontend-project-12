@@ -3,8 +3,8 @@ import axios from 'axios';
 import Header from './Header';
 import { io } from 'socket.io-client'
 import { useSelector, useDispatch } from 'react-redux';
-import { setChannels, addChannel } from '../slices/channelsSlice.js';
-import { setMessages, addMessage } from '../slices/messagesSlice.js';
+import { setChannels } from '../slices/channelsSlice.js';
+import { setMessages } from '../slices/messagesSlice.js';
 import Channel from './Channel.jsx';
 import AddChannel from './modals/AddChannel.jsx';
 import RemoveChannel from './modals/RemoveChannel.jsx';
@@ -69,18 +69,6 @@ const HomePage = () => {
         getChannels();
     }, []);
 
-    useEffect(() => {
-        socket.on("newMessage", (...args) => {
-            args.forEach((arg) => {
-                dispatch(addMessage({ newMessage: arg }))
-            });
-        });
-        return () => {
-            socket.off('newMessage');
-        };
-    }, [dispatch])
-
-
     const handleAdd = (e) => {
         e.preventDefault();
         dispatch(showModal({ type: 'adding', item: null }));
@@ -95,7 +83,6 @@ const HomePage = () => {
             try {
                 const newMessage = { body: values.body, channelId: activeChannelId, username };
                 const res = await axios.post(routes.messagesPath(), newMessage, { headers: getAuthHeader() });
-                // dispatch(addMessage({ newMessage: res.data }));
                 formik.values.body = '';
                 inputRef.current.select();
             } catch (e) {

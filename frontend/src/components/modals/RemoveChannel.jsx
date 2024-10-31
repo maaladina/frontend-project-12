@@ -3,7 +3,6 @@ import axios from 'axios';
 import { Modal, Button } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { hideModal } from "../../slices/modalSlice";
-import { removeChannel } from "../../slices/channelsSlice";
 import routes from "../../routes";
 import { useTranslation } from 'react-i18next';
 
@@ -19,7 +18,6 @@ const RemoveChannel = ({ item }) => {
                 Authorization: `Bearer ${token}`,
             },
         })
-        dispatch(removeChannel({ channel: item }));
         dispatch(hideModal());
     }
 
