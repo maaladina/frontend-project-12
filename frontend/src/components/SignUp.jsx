@@ -9,23 +9,26 @@ import useAuth from '../hooks/index.jsx';
 import signup from '../images/signUp.jpg';
 import * as Yup from 'yup';
 import routes from '../routes.js';
+import { useTranslation } from 'react-i18next';
 
-const SignupSchema = Yup.object().shape({
-    username: Yup.string()
-        .required('Обязательное поле')
-        .min(3, 'От 3 до 20 символов')
-        .max(20, 'От 3 до 20 символов'),
-    password: Yup.string()
-        .min(6, 'Минимум 6 букв')
-        .required('Обязательное поле'),
-    confirmPassword: Yup.string().oneOf([Yup.ref('password'), null], 'Пароли должны совпадать'),
-});
 
 const SignUp = () => {
     const [regFailed, setRegFailed] = useState(false);
     const navigate = useNavigate();
     const auth = useAuth();
     const dispatch = useDispatch();
+    const { t } = useTranslation();
+
+    const SignupSchema = Yup.object().shape({
+        username: Yup.string()
+            .required(t('errors.required'))
+            .min(3, t('errors.length'))
+            .max(20, t('errors.length')),
+        password: Yup.string()
+            .min(6, t('errors.minLength'))
+            .required(t('errors.required')),
+        confirmPassword: Yup.string().oneOf([Yup.ref('password'), null], t('errors.confirmPassword')),
+    });
 
     const formik = useFormik({
         initialValues: {
@@ -58,7 +61,7 @@ const SignUp = () => {
                 <div className="d-flex flex-column h-100">
                     <nav className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
                         <div className="container">
-                            <a className="navbar-brand" href="/">Hexlet Chat</a>
+                            <a className="navbar-brand" href="/">{t('header.title')}</a>
                         </div>
                     </nav>
                     <div className="container-fluid h-100">
@@ -70,7 +73,7 @@ const SignUp = () => {
                                     </div>
 
                                     <Form onSubmit={formik.handleSubmit} className="w-50">
-                                        <h1 className="text-center mb-4">Регистрация</h1>
+                                        <h1 className="text-center mb-4">{t('signUp.title')}</h1>
                                         <Form.Group className="form-floating mb-3">
                                             <Form.Control
                                                 type="text"
@@ -84,7 +87,7 @@ const SignUp = () => {
                                                 isInvalid={formik.touched.username
                                                     && (!!formik.errors.username || regFailed)}
                                             />
-                                            <Form.Label htmlFor="username">Имя пользователя</Form.Label>
+                                            <Form.Label htmlFor="username">{t('signUp.name')}</Form.Label>
                                             <Form.Control.Feedback type="invalid">
                                                 {formik.errors.username}
                                             </Form.Control.Feedback>
@@ -104,7 +107,7 @@ const SignUp = () => {
                                                 isInvalid={formik.touched.password
                                                     && (!!formik.errors.password || regFailed)}
                                             />
-                                            <Form.Label htmlFor="password">Пароль</Form.Label>
+                                            <Form.Label htmlFor="password">{t('signUp.password')}</Form.Label>
                                             <Form.Control.Feedback type="invalid">
                                                 {formik.errors.password}
                                             </Form.Control.Feedback>
@@ -123,10 +126,10 @@ const SignUp = () => {
                                                 isInvalid={formik.touched.confirmPassword
                                                     && (!!formik.errors.confirmPassword || regFailed)}
                                             />
-                                            <Form.Label htmlFor="confirmPassword">Подтвердите пароль</Form.Label>
+                                            <Form.Label htmlFor="confirmPassword">{t('signUp.confirmPassword')}</Form.Label>
                                             {regFailed ?
                                                 <Form.Control.Feedback type="invalid">
-                                                    Такой пользователь уже существует
+                                                    {t('errors.exist')}
                                                 </Form.Control.Feedback> :
 
                                                 <Form.Control.Feedback type="invalid">
@@ -136,7 +139,7 @@ const SignUp = () => {
 
                                         </Form.Group>
 
-                                        <button type="submit" className="w-100 btn btn-outline-primary">Зарегистрироваться</button>
+                                        <button type="submit" className="w-100 btn btn-outline-primary">{t('signUp.submit')}</button>
                                     </Form>
 
                                 </div>

@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux';
 import useAuth from '../hooks/index.jsx';
 import login from '../images/hexletImage.jpg';
 import routes from '../routes.js';
+import { useTranslation } from 'react-i18next';
 
 const Login = () => {
     const auth = useAuth();
@@ -17,6 +18,8 @@ const Login = () => {
     const { from } = location.state;
     const navigate = useNavigate();
     const dispatch = useDispatch();
+
+    const { t } = useTranslation();
 
     useEffect(() => {
         inputRef.current.focus();
@@ -54,7 +57,7 @@ const Login = () => {
                 <div className="d-flex flex-column h-100">
                     <nav className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
                         <div className="container">
-                            <a className="navbar-brand" href="/">Hexlet Chat</a>
+                            <a className="navbar-brand" href="/">{t('header.title')}</a>
                         </div>
                     </nav>
                     <div className="container-fluid h-100">
@@ -68,7 +71,7 @@ const Login = () => {
 
 
                                         <Form onSubmit={formik.handleSubmit} className="col-12 col-md-6 mt-3 mt-md-0">
-                                            <h1 className="text-center mb-4">Войти</h1>
+                                            <h1 className="text-center mb-4">{t('login.title')}</h1>
                                             <fieldset>
                                                 <Form.Group className="form-floating mb-3">
                                                     <Form.Control
@@ -83,7 +86,7 @@ const Login = () => {
                                                         required
                                                         ref={inputRef}
                                                     />
-                                                    <Form.Label htmlFor="username">Ваш ник</Form.Label>
+                                                    <Form.Label htmlFor="username">{t('login.name')}</Form.Label>
                                                 </Form.Group>
                                                 <Form.Group className="form-floating mb-3">
                                                     <Form.Control
@@ -98,15 +101,15 @@ const Login = () => {
                                                         isInvalid={authFailed}
                                                         required
                                                     />
-                                                    <Form.Label htmlFor="password">Пароль</Form.Label>
-                                                    <Form.Control.Feedback type="invalid">the username or password is incorrect</Form.Control.Feedback>
+                                                    <Form.Label htmlFor="password">{t('login.password')}</Form.Label>
+                                                    <Form.Control.Feedback type="invalid">{t('errors.incorrect')}</Form.Control.Feedback>
                                                 </Form.Group>
-                                                <Button type="submit" className="w-100 mb-3 btn btn-outline-primary" variant="outline-primary">Войти</Button>
+                                                <Button type="submit" className="w-100 mb-3 btn btn-outline-primary" variant="outline-primary">{t('login.submit')}</Button>
                                             </fieldset>
                                         </Form>
                                     </div>
                                     <div className="card-footer p-4">
-                                        <div className="text-center"><span>Нет аккаунта?</span> <a href="/signup">Регистрация</a></div>
+                                        <div className="text-center"><span>{t('login.noAccount')}</span> <a href="/signup">{t('login.signUp')}</a></div>
                                     </div>
                                 </div>
                             </div>

@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import * as Yup from 'yup';
 import { hideModal } from "../../slices/modalSlice";
 import { addChannel, setActiveChannelId } from "../../slices/channelsSlice";
+import { useTranslation } from 'react-i18next';
 
 
 const AddChannel = () => {
@@ -16,6 +17,7 @@ const AddChannel = () => {
     const token = useSelector((state) => state.auth.token);
     const channelNames = [];
     channels.forEach((channel) => channelNames.push(channel.name))
+    const { t } = useTranslation();
 
     useEffect(() => {
         inputRef.current.focus();
@@ -23,10 +25,10 @@ const AddChannel = () => {
 
     const addChannelSchema = Yup.object().shape({
         name: Yup.string()
-            .required('Обязательное поле')
-            .min(3, 'От 3 до 20 символов')
-            .max(20, 'От 3 до 20 символов')
-            .notOneOf(channelNames, 'Должно быть уникальным'),
+            .required(t('errors.required'))
+            .min(3, t('errors.length'))
+            .max(20, t('errors.length'))
+            .notOneOf(channelNames, t('errors.notUnique')),
     });
 
     const formik = useFormik({
@@ -54,7 +56,7 @@ const AddChannel = () => {
     return (
         <Modal show onHide={() => dispatch(hideModal())} centered>
             <Modal.Header closeButton>
-                <Modal.Title>Добавить канал</Modal.Title>
+                <Modal.Title>{t('modals.addChannel')}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Form className="" onSubmit={formik.handleSubmit}>
@@ -70,13 +72,13 @@ const AddChannel = () => {
                             isInvalid={formik.touched.name
                                 && (!!formik.errors.name || addFailed)}
                         />
-                        <Form.Label className="visually-hidden" htmlFor="name">Имя канала</Form.Label>
+                        <Form.Label className="visually-hidden" htmlFor="name">{t('modals.channelName')}</Form.Label>
                         <Form.Control.Feedback type="invalid">
                             {formik.errors.name}
                         </Form.Control.Feedback>
                         <div className="d-flex justify-content-end">
-                            <button type="button" className="me-2 btn btn-secondary" onClick={() => dispatch(hideModal())}>Отменить</button>
-                            <button type="submit" className="btn btn-primary">Отправить</button>
+                            <button type="button" className="me-2 btn btn-secondary" onClick={() => dispatch(hideModal())}>{t('modals.cancel')}</button>
+                            <button type="submit" className="btn btn-primary">{t('modals.send')}</button>
                         </div>
                     </Form.Group>
                 </Form>

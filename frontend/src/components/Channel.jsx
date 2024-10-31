@@ -4,6 +4,7 @@ import { addChannel, setActiveChannelId } from '../slices/channelsSlice.js';
 import classNames from 'classnames';
 import { Dropdown, DropdownButton, Button, ButtonGroup } from 'react-bootstrap';
 import { showModal } from '../slices/modalSlice.js';
+import { useTranslation } from 'react-i18next';
 
 const Channel = ({ channel, activeChannelId }) => {
     const dispatch = useDispatch();
@@ -17,6 +18,7 @@ const Channel = ({ channel, activeChannelId }) => {
     }
     )
 
+    const { t } = useTranslation();
 
     const handleClick = (e) => {
         const activeChannelId = e.target.id;
@@ -32,9 +34,9 @@ const Channel = ({ channel, activeChannelId }) => {
                     </button>
                     <DropdownButton variant={channel.id == activeChannelId ? 'secondary rounded-0' : 'light rounded-0'}
                         title="">
-                        <span className="visually-hidden">Управление каналом</span>
-                        <Dropdown.Item onClick={() => dispatch(showModal({ type: 'removing', item: channel }))}>Удалить</Dropdown.Item>
-                        <Dropdown.Item onClick={() => dispatch(showModal({ type: 'renaming', item: channel }))}>Переименовать</Dropdown.Item>
+                        <span className="visually-hidden">{t('chat.edit')}</span>
+                        <Dropdown.Item onClick={() => dispatch(showModal({ type: 'removing', item: channel }))}>{t('chat.remove')}</Dropdown.Item>
+                        <Dropdown.Item onClick={() => dispatch(showModal({ type: 'renaming', item: channel }))}>{t('chat.rename')}</Dropdown.Item>
                     </DropdownButton>
                 </Dropdown>
             </li>

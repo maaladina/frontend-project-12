@@ -2,22 +2,25 @@ import React from "react";
 import useAuth from '../hooks/index.jsx';
 import { Button } from 'react-bootstrap';
 import { useLocation, Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const AuthButton = () => {
     const auth = useAuth();
     const location = useLocation();
+    const { t } = useTranslation();
     return (
         auth.loggedIn
-            ? <Button onClick={auth.logOut} className="btn btn-primary">Выйти</Button>
-            : <Button as={Link} to="/login" state={{ from: location }} className="btn btn-primary">Войти</Button>
+            ? <Button onClick={auth.logOut} className="btn btn-primary">{t('header.logOut')}</Button>
+            : <Button as={Link} to="/login" state={{ from: location }} className="btn btn-primary">{t('login.submit')}</Button>
     );
 };
 
 const Header = () => {
+    const { t } = useTranslation();
     return (
         <nav className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
             <div className="container">
-                <a className="navbar-brand" href="/">Hexlet Chat</a>
+                <a className="navbar-brand" href="/">{t('header.title')}</a>
                 <AuthButton />
             </div>
         </nav>

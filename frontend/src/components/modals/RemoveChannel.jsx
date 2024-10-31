@@ -5,10 +5,13 @@ import { useSelector, useDispatch } from 'react-redux';
 import { hideModal } from "../../slices/modalSlice";
 import { removeChannel } from "../../slices/channelsSlice";
 import routes from "../../routes";
+import { useTranslation } from 'react-i18next';
 
 const RemoveChannel = ({ item }) => {
     const dispatch = useDispatch();
     const token = useSelector((state) => state.auth.token);
+
+    const { t } = useTranslation();
 
     const handleRemove = async () => {
         await axios.delete(routes.channelPath(item.id), {
@@ -23,14 +26,14 @@ const RemoveChannel = ({ item }) => {
     return (
         <Modal show onHide={() => dispatch(hideModal())} centered>
             <Modal.Header closeButton>
-                <Modal.Title>Удалить канал</Modal.Title>
+                <Modal.Title>{t('modals.removeChannel')}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <p className="lead">Уверены?</p>
+                <p className="lead">{t('modals.sure')}</p>
             </Modal.Body>
             <Modal.Footer>
-                <Button type="button" className="me-2 btn btn-secondary" onClick={() => dispatch(hideModal())}>Отменить</Button>
-                <Button type="button" className="btn btn-danger" onClick={handleRemove}>Удалить</Button>
+                <Button type="button" className="me-2 btn btn-secondary" onClick={() => dispatch(hideModal())}>{t('modals.cancel')}</Button>
+                <Button type="button" className="btn btn-danger" onClick={handleRemove}>{t('modals.delete')}</Button>
             </Modal.Footer>
         </Modal>
     )
