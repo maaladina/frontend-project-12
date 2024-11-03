@@ -44,6 +44,12 @@ export default {
             butYouCan: 'Но вы можете перейти',
             mainPage: 'на главную страницу',
         },
+        toast: {
+            networkError: 'Ошибка соединения',
+            addChannel: 'Канал создан',
+            removeChannel: 'Канал удален',
+            renameChannel: 'Канал переименован',
+        },
         errors: {
             required: 'Обязательное поле',
             length: 'От 3 до 20 символов',

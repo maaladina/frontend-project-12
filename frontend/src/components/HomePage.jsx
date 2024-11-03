@@ -14,6 +14,9 @@ import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 import { Button, Form } from 'react-bootstrap';
 import { showModal } from '../slices/modalSlice.js';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import showToast from './toast.js';
 
 const getAuthHeader = () => {
     const userId = JSON.parse(localStorage.getItem('userId'));
@@ -72,7 +75,7 @@ const HomePage = () => {
     const handleAdd = (e) => {
         e.preventDefault();
         dispatch(showModal({ type: 'adding', item: null }));
-    }
+    };
 
     const formik = useFormik({
         initialValues: {
@@ -88,6 +91,7 @@ const HomePage = () => {
             } catch (e) {
                 setSendFailed(true);
                 console.log(e);
+                showToast('error', t('toast.networkError'));
             }
         }
     })
@@ -155,6 +159,7 @@ const HomePage = () => {
                         </div>
                     </div>
                     <div className="Toastify">
+                        <ToastContainer />
                     </div>
                 </div>
             </div>

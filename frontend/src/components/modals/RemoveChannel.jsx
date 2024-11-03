@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { hideModal } from "../../slices/modalSlice";
 import routes from "../../routes";
 import { useTranslation } from 'react-i18next';
+import showToast from "../toast";
 
 const RemoveChannel = ({ item }) => {
     const dispatch = useDispatch();
@@ -13,12 +14,19 @@ const RemoveChannel = ({ item }) => {
     const { t } = useTranslation();
 
     const handleRemove = async () => {
-        await axios.delete(routes.channelPath(item.id), {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        })
-        dispatch(hideModal());
+        try {
+            const res = await axios.delete(routes.channelPath(item.id), {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            })
+            if (res.status == 200) {
+                dispatch(hideModal());
+                showToast('success', t('toast.removeChannel'))
+            }
+        } catch (e) {
+            showToast('error', t('toast.networkError'));
+        }
     }
 
     return (

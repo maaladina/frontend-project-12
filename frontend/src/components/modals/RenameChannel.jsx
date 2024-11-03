@@ -7,6 +7,7 @@ import * as Yup from 'yup';
 import { hideModal } from "../../slices/modalSlice";
 import { renameChannel } from "../../slices/channelsSlice";
 import { useTranslation } from 'react-i18next';
+import showToast from "../toast";
 
 const RenameChannel = ({ item }) => {
     const dispatch = useDispatch();
@@ -41,11 +42,15 @@ const RenameChannel = ({ item }) => {
             try {
                 const editedChannel = values;
                 const res = await axios.patch(`/api/v1/channels/${item.id}`, editedChannel, { headers: { Authorization: `Bearer ${token}` } });
-                dispatch(renameChannel({ id: item.id, name: values.name }));
-                dispatch(hideModal());
+                if (res.status == 200) {
+                    dispatch(renameChannel({ id: item.id, name: values.name }));
+                    dispatch(hideModal());
+                    showToast('success', t('toast.renameChannel'))
+                }
             } catch (e) {
                 setRenameFailed(true);
                 console.log(e);
+                showToast('error', t('toast.networkError'));
             }
         }
 

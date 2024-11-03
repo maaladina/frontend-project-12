@@ -5,8 +5,9 @@ import { Modal, Button, Form } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import * as Yup from 'yup';
 import { hideModal } from "../../slices/modalSlice";
-import { addChannel, setActiveChannelId } from "../../slices/channelsSlice";
+import { setActiveChannelId } from "../../slices/channelsSlice";
 import { useTranslation } from 'react-i18next';
+import showToast from "../toast";
 
 
 const AddChannel = () => {
@@ -42,11 +43,15 @@ const AddChannel = () => {
                 const newChannel = values;
                 const res = await axios.post('/api/v1/channels', newChannel, { headers: { Authorization: `Bearer ${token}` } });
                 const newChannelRes = res.data;
-                dispatch(setActiveChannelId({ activeChannelId: newChannelRes.id }));
-                dispatch(hideModal())
+                if (res.status == 200) {
+                    dispatch(setActiveChannelId({ activeChannelId: newChannelRes.id }));
+                    dispatch(hideModal())
+                    showToast('success', t('toast.addChannel'))
+                }
             } catch (e) {
                 setAddFailed(true);
                 console.log(e);
+                showToast('error', t('toast.networkError'));
             }
         }
 

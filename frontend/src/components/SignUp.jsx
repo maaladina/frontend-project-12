@@ -10,7 +10,7 @@ import signup from '../images/signUp.jpg';
 import * as Yup from 'yup';
 import routes from '../routes.js';
 import { useTranslation } from 'react-i18next';
-
+import showToast from './toast.js';
 
 const SignUp = () => {
     const [regFailed, setRegFailed] = useState(false);
@@ -51,6 +51,7 @@ const SignUp = () => {
                     setRegFailed(true);
                 }
                 console.log(e);
+                showToast('error', t('toast.networkError'));
             }
         }
     })

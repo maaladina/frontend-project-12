@@ -9,6 +9,8 @@ import useAuth from '../hooks/index.jsx';
 import login from '../images/hexletImage.jpg';
 import routes from '../routes.js';
 import { useTranslation } from 'react-i18next';
+import showToast from './toast.js';
+import { ToastContainer } from 'react-toastify';
 
 const Login = () => {
     const auth = useAuth();
@@ -34,6 +36,7 @@ const Login = () => {
             setAuthFailed(false);
             try {
                 const res = await axios.post(routes.loginPath(), values);
+                console.log(res.status);
                 localStorage.setItem('userId', JSON.stringify(res.data));
                 const user = res.data;
                 dispatch(setUser({ user }));
@@ -41,11 +44,13 @@ const Login = () => {
                 navigate(from);
             } catch (err) {
                 formik.setSubmitting(false);
+                console.log(err);
                 if (err.isAxiosError && err.response.status === 401) {
                     setAuthFailed(true);
                     inputRef.current.select();
                     return;
                 }
+                showToast('error', t('toast.networkError'));
                 throw err;
             }
         },
@@ -116,7 +121,9 @@ const Login = () => {
                         </div>
                     </div>
                 </div>
-                <div className="Toastify"></div>
+                <div className="Toastify">
+                    <ToastContainer />
+                </div>
             </div >
         </div >
     )
