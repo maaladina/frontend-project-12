@@ -17,6 +17,7 @@ import { showModal } from '../slices/modalSlice.js';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import showToast from './toast.js';
+import filter from 'leo-profanity';
 
 const getAuthHeader = () => {
     const userId = JSON.parse(localStorage.getItem('userId'));
@@ -84,8 +85,8 @@ const HomePage = () => {
         onSubmit: async (values) => {
             setSendFailed(false);
             try {
-                const newMessage = { body: values.body, channelId: activeChannelId, username };
-                const res = await axios.post(routes.messagesPath(), newMessage, { headers: getAuthHeader() });
+                const newMessage = { body: filter.clean(values.body), channelId: activeChannelId, username };
+                const res = await axios.post(routes.messagesPath(), newMessage, { headers: getAuthHeader() })
                 formik.values.body = '';
                 inputRef.current.select();
             } catch (e) {

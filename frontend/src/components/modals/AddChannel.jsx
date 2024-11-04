@@ -8,6 +8,7 @@ import { hideModal } from "../../slices/modalSlice";
 import { setActiveChannelId } from "../../slices/channelsSlice";
 import { useTranslation } from 'react-i18next';
 import showToast from "../toast";
+import filter from 'leo-profanity';
 
 
 const AddChannel = () => {
@@ -40,7 +41,10 @@ const AddChannel = () => {
         onSubmit: async (values) => {
             setAddFailed(false)
             try {
-                const newChannel = values;
+                const newChannel = { name: filter.clean(values.name) };
+                if (channelNames.includes(newChannel.name)) {
+                    return;
+                }
                 const res = await axios.post('/api/v1/channels', newChannel, { headers: { Authorization: `Bearer ${token}` } });
                 const newChannelRes = res.data;
                 if (res.status == 200) {

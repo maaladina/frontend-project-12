@@ -8,6 +8,7 @@ import { hideModal } from "../../slices/modalSlice";
 import { renameChannel } from "../../slices/channelsSlice";
 import { useTranslation } from 'react-i18next';
 import showToast from "../toast";
+import filter from 'leo-profanity';
 
 const RenameChannel = ({ item }) => {
     const dispatch = useDispatch();
@@ -37,13 +38,15 @@ const RenameChannel = ({ item }) => {
         },
         validationSchema: renameChannelSchema,
         onSubmit: async (values) => {
-            console.log(item)
             setRenameFailed(false)
             try {
-                const editedChannel = values;
+                const editedChannel = { name: filter.clean(values.name) };
+                if (channelNames.includes(editedChannel.name)) {
+                    return;
+                }
                 const res = await axios.patch(`/api/v1/channels/${item.id}`, editedChannel, { headers: { Authorization: `Bearer ${token}` } });
                 if (res.status == 200) {
-                    dispatch(renameChannel({ id: item.id, name: values.name }));
+                    dispatch(renameChannel({ id: item.id, name: editedChannel.name }));
                     dispatch(hideModal());
                     showToast('success', t('toast.renameChannel'))
                 }

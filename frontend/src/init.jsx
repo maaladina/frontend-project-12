@@ -11,7 +11,7 @@ import store from './slices/index.js';
 import { io } from 'socket.io-client'
 import { addMessage } from './slices/messagesSlice.js';
 import { addChannel, removeChannel } from './slices/channelsSlice.js';
-
+import filter from 'leo-profanity';
 
 const AuthProvider = ({ children }) => {
     const [loggedIn, setLoggedIn] = useState(localStorage.getItem('userId'));
@@ -38,6 +38,11 @@ const init = async () => {
             resources,
             fallbackLng: 'ru',
         });
+
+    filter.clearList()
+    filter.add(filter.getDictionary('en'))
+    filter.add(filter.getDictionary('fr'))
+    filter.add(filter.getDictionary('ru'))
 
     const { dispatch } = store;
     const socket = io();
