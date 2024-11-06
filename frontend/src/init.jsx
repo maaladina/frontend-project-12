@@ -1,4 +1,5 @@
 import i18next from 'i18next';
+import { Provider as RollbarProvider, ErrorBoundary } from '@rollbar/react';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
 import App from './App';
 import resources from './locales/index.js';
@@ -29,6 +30,7 @@ const AuthProvider = ({ children }) => {
     );
 };
 
+
 const init = async () => {
     const i18n = i18next.createInstance();
 
@@ -43,6 +45,15 @@ const init = async () => {
     filter.add(filter.getDictionary('en'))
     filter.add(filter.getDictionary('fr'))
     filter.add(filter.getDictionary('ru'))
+
+    const rollbarConfig = {
+        accessToken: 'edbc747f92e5463590bec04b5b4de796',
+        captureUncaught: true,
+        captureUnhandledRejections: true,
+        payload: {
+            environment: 'production',
+        },
+    };
 
     const { dispatch } = store;
     const socket = io();
@@ -64,14 +75,17 @@ const init = async () => {
 
 
     return (
-
-        <I18nextProvider i18n={i18n}>
-            <Provider store={store}>
-                <AuthProvider>
-                    <App />
-                </AuthProvider>
-            </Provider>
-        </I18nextProvider>
+        <RollbarProvider config={rollbarConfig}>
+            <ErrorBoundary>
+                <I18nextProvider i18n={i18n}>
+                    <Provider store={store}>
+                        <AuthProvider>
+                            <App />
+                        </AuthProvider>
+                    </Provider>
+                </I18nextProvider>
+            </ErrorBoundary>
+        </RollbarProvider>
     );
 };
 
