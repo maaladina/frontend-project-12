@@ -22,8 +22,7 @@ const Channel = ({ channel, activeChannelId }) => {
   const { t } = useTranslation();
 
   const handleClick = (e) => {
-    const activeChannelId = e.target.id;
-    dispatch(setActiveChannelId({ activeChannelId }));
+    dispatch(setActiveChannelId({ activeChannelId: e.target.id }));
   };
 
   if (channel.removable) {

@@ -1,7 +1,7 @@
 import i18next from 'i18next';
 import { Provider as RollbarProvider, ErrorBoundary } from '@rollbar/react';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { io } from 'socket.io-client';
 import filter from 'leo-profanity';
 import { Provider } from 'react-redux';
@@ -22,8 +22,10 @@ const AuthProvider = ({ children }) => {
     setLoggedIn(false);
   };
 
+  const contextValue = useMemo(() => ({ loggedIn, logIn, logOut }), [loggedIn]);
+
   return (
-    <AuthContext.Provider value={{ loggedIn, logIn, logOut }}>
+    <AuthContext.Provider value={contextValue}>
       {children}
     </AuthContext.Provider>
   );

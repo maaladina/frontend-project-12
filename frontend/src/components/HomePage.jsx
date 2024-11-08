@@ -46,15 +46,14 @@ const HomePage = () => {
   const { t } = useTranslation();
 
   const renderModal = () => {
-    if (!modalType) {
-      return null;
-    } if (modalType === 'adding') {
+    if (modalType === 'adding') {
       return <AddChannel />;
     } if (modalType === 'removing') {
       return <RemoveChannel item={item} />;
     } if (modalType === 'renaming') {
       return <RenameChannel item={item} />;
     }
+    return null;
   };
 
   useEffect(() => {
@@ -82,7 +81,11 @@ const HomePage = () => {
     onSubmit: async (values) => {
       setSendFailed(false);
       try {
-        const newMessage = { body: filter.clean(values.body), channelId: activeChannelId, username };
+        const newMessage = {
+          body: filter.clean(values.body),
+          channelId: activeChannelId,
+          username,
+        };
         await axios.post(routes.messagesPath(), newMessage, { headers: getAuthHeader() });
         formik.values.body = '';
         inputRef.current.select();
@@ -114,7 +117,13 @@ const HomePage = () => {
                     </button>
                   </div>
                   <ul id="channels-box" className="nav flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block">
-                    {channels ? channels.map((channel) => <Channel channel={channel} activeChannelId={activeChannelId} key={channel.id} />) : null}
+                    {channels.map((channel) => (
+                      <Channel
+                        channel={channel}
+                        activeChannelId={activeChannelId}
+                        key={channel.id}
+                      />
+                    ))}
                   </ul>
                 </div>
                 <div className="col p-0 h-100">
