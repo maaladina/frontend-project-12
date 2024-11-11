@@ -2,7 +2,7 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import classNames from 'classnames';
 import {
-  Dropdown, DropdownButton, ButtonGroup,
+  Dropdown, ButtonGroup, Button,
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { showModal } from '../slices/modalSlice.js';
@@ -28,11 +28,11 @@ const Channel = ({ channel, activeChannelId }) => {
   if (channel.removable) {
     return (
       <li className="nav-item w-100">
-        <Dropdown className="w-100 d-flex show" as={ButtonGroup}>
-          <button type="button" className={buttonCLass} id={channel.id} onClick={handleClick}>
+        <Dropdown className="d-flex show" as={ButtonGroup}>
+          <Button className={buttonCLass} id={channel.id} onClick={handleClick}>
             <span className="me-1"># </span>
             {channel.name}
-          </button>
+          </Button>
           <Dropdown.Toggle variant={channel.id === activeChannelId ? 'secondary' : 'light'} className="flex-grow-0 dropdown-toggle-split">
             <span className="visually-hidden">{t('chat.edit')}</span>
           </Dropdown.Toggle>
