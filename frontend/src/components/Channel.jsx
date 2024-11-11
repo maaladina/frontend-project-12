@@ -33,14 +33,13 @@ const Channel = ({ channel, activeChannelId }) => {
             <span className="me-1"># </span>
             {channel.name}
           </button>
-          <DropdownButton
-            variant={channel.id === activeChannelId ? 'secondary rounded-0' : 'light rounded-0'}
-            title=""
-          >
+          <Dropdown.Toggle variant={channel.id === activeChannelId ? 'secondary' : 'light'} className="flex-grow-0 dropdown-toggle-split">
             <span className="visually-hidden">{t('chat.edit')}</span>
+          </Dropdown.Toggle>
+          <Dropdown.Menu>
             <Dropdown.Item onClick={() => dispatch(showModal({ type: 'removing', item: channel }))}>{t('chat.remove')}</Dropdown.Item>
             <Dropdown.Item onClick={() => dispatch(showModal({ type: 'renaming', item: channel }))}>{t('chat.rename')}</Dropdown.Item>
-          </DropdownButton>
+          </Dropdown.Menu>
         </Dropdown>
       </li>
     );
