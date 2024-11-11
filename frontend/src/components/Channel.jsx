@@ -1,6 +1,5 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import classNames from 'classnames';
 import {
   Dropdown, ButtonGroup, Button,
 } from 'react-bootstrap';
@@ -10,14 +9,6 @@ import { setActiveChannelId } from '../slices/channelsSlice.js';
 
 const Channel = ({ channel, activeChannelId }) => {
   const dispatch = useDispatch();
-  const buttonCLass = classNames({
-    btn: true,
-    'w-100': true,
-    'rounded-0': true,
-    'text-start': true,
-    'text-truncate': true,
-    'btn-secondary': channel.id === activeChannelId,
-  });
 
   const { t } = useTranslation();
 
@@ -29,7 +20,8 @@ const Channel = ({ channel, activeChannelId }) => {
     return (
       <li className="nav-item w-100">
         <Dropdown className="d-flex show" as={ButtonGroup}>
-          <Button className={buttonCLass} id={channel.id} onClick={handleClick}>
+          <Button variant={channel.id === activeChannelId ? 'secondary' : ''}
+            className="w-100 rounded-0 text-start text-truncate" id={channel.id} onClick={handleClick}>
             <span className="me-1"># </span>
             {channel.name}
           </Button>
@@ -46,10 +38,11 @@ const Channel = ({ channel, activeChannelId }) => {
   }
   return (
     <li className="nav-item w-100">
-      <button type="button" className={buttonCLass} id={channel.id} onClick={handleClick}>
+      <Button variant={channel.id === activeChannelId ? 'secondary' : ''}
+        className="w-100 rounded-0 text-start text-truncate" id={channel.id} onClick={handleClick}>
         <span className="me-1">#</span>
         {channel.name}
-      </button>
+      </Button>
     </li>
   );
 };
