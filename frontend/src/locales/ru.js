@@ -32,7 +32,7 @@ export default {
     modals: {
       addChannel: 'Добавить канал',
       renameChannel: 'Переименовать канал',
-      cnannelName: 'Имя канала',
+      channelName: 'Имя канала',
       removeChannel: 'Удалить канал',
       sure: 'Уверены?',
       send: 'Отправить',
