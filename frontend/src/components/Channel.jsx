@@ -20,8 +20,12 @@ const Channel = ({ channel, activeChannelId }) => {
     return (
       <li className="nav-item w-100">
         <Dropdown className="d-flex show" as={ButtonGroup}>
-          <Button variant={channel.id === activeChannelId ? 'secondary' : ''}
-            className="w-100 rounded-0 text-start text-truncate" id={channel.id} onClick={handleClick}>
+          <Button
+            variant={channel.id === activeChannelId ? 'secondary' : ''}
+            className="w-100 rounded-0 text-start text-truncate"
+            id={channel.id}
+            onClick={handleClick}
+          >
             <span className="me-1"># </span>
             {channel.name}
           </Button>
@@ -38,8 +42,12 @@ const Channel = ({ channel, activeChannelId }) => {
   }
   return (
     <li className="nav-item w-100">
-      <Button variant={channel.id === activeChannelId ? 'secondary' : ''}
-        className="w-100 rounded-0 text-start text-truncate" id={channel.id} onClick={handleClick}>
+      <Button
+        variant={channel.id === activeChannelId ? 'secondary' : ''}
+        className="w-100 rounded-0 text-start text-truncate"
+        id={channel.id}
+        onClick={handleClick}
+      >
         <span className="me-1">#</span>
         {channel.name}
       </Button>
