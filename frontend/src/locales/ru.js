@@ -53,7 +53,7 @@ export default {
     errors: {
       required: 'Обязательное поле',
       length: 'От 3 до 20 символов',
-      minLength: 'Минимум 6 букв',
+      minLength: 'Не менее 6 символов',
       confirmPassword: 'Пароли должны совпадать',
       exist: 'Такой пользователь уже существует',
       notUnique: 'Должно быть уникальным',
