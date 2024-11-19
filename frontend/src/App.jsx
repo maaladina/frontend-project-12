@@ -10,7 +10,6 @@ import NotFound from './components/NotFound';
 import Login from './components/Login';
 import HomePage from './components/HomePage.jsx';
 import SignUp from './components/SignUp.jsx';
-import './App.css';
 import useAuth from './hooks/index.jsx';
 
 const PrivateRoute = ({ children }) => {

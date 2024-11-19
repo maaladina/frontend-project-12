@@ -7,7 +7,6 @@ import filter from 'leo-profanity';
 import { Provider } from 'react-redux';
 import App from './App';
 import resources from './locales/index.js';
-import './App.css';
 import AuthContext from './contexts/index.jsx';
 import store from './slices/index.js';
 import { addMessage } from './slices/messagesSlice.js';
