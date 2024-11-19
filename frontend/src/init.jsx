@@ -46,7 +46,7 @@ const init = async () => {
   filter.add(filter.getDictionary('ru'));
 
   const rollbarConfig = {
-    accessToken: 'edbc747f92e5463590bec04b5b4de796',
+    accessToken: process.env.REACT_APP_ROLLBAR_TOKEN,
     captureUncaught: true,
     captureUnhandledRejections: true,
     payload: {
@@ -56,25 +56,17 @@ const init = async () => {
 
   const { dispatch } = store;
   const socket = io();
-  socket.on('newMessage', (...args) => {
-    args.forEach((arg) => {
-      dispatch(addMessage({ newMessage: arg }));
-    });
+  socket.on('newMessage', (arg) => {
+    dispatch(addMessage({ newMessage: arg }));
   });
-  socket.on('newChannel', (...args) => {
-    args.forEach((arg) => {
-      dispatch(addChannel({ newChannel: arg }));
-    });
+  socket.on('newChannel', (arg) => {
+    dispatch(addChannel({ newChannel: arg }));
   });
-  socket.on('removeChannel', (...args) => {
-    args.forEach((arg) => {
-      dispatch(removeChannel({ channel: arg }));
-    });
+  socket.on('removeChannel', (arg) => {
+    dispatch(removeChannel({ channel: arg }));
   });
-  socket.on('renameChannel', (...args) => {
-    args.forEach((arg) => {
-      dispatch(renameChannel({ id: arg.id, name: arg.name }));
-    });
+  socket.on('renameChannel', (arg) => {
+    dispatch(renameChannel({ id: arg.id, name: arg.name }));
   });
 
   return (
