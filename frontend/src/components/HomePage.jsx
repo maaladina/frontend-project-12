@@ -74,6 +74,9 @@ const HomePage = () => {
       body: '',
     },
     onSubmit: async (values) => {
+      if (values.body==='/error') {
+        throw 'error for rollbar';
+      }
       setSendFailed(false);
       try {
         const newMessage = {
