@@ -22,21 +22,21 @@ const PrivateRoute = ({ children }) => {
 };
 
 const App = () => (
-    <Router>
-      <Routes>
-        <Route
-          path="/"
-          element={(
-            <PrivateRoute>
-              <HomePage />
-            </PrivateRoute>
-                    )}
-        />
-        <Route path="*" element={<NotFound />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<SignUp />} />
-      </Routes>
-    </Router>
-  );
+  <Router>
+    <Routes>
+      <Route
+        path="/"
+        element={(
+          <PrivateRoute>
+            <HomePage />
+          </PrivateRoute>
+        )}
+      />
+      <Route path="*" element={<NotFound />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/signup" element={<SignUp />} />
+    </Routes>
+  </Router>
+);
 
 export default App;
