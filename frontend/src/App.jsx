@@ -21,8 +21,7 @@ const PrivateRoute = ({ children }) => {
   );
 };
 
-const App = () => {
-  return (
+const App = () => (
     <Router>
       <Routes>
         <Route
@@ -39,6 +38,5 @@ const App = () => {
       </Routes>
     </Router>
   );
-};
 
 export default App;
