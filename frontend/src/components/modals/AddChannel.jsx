@@ -9,13 +9,14 @@ import filter from 'leo-profanity';
 import { hideModal } from '../../slices/modalSlice';
 import { setActiveChannelId } from '../../slices/channelsSlice';
 import showToast from '../toast';
+import useAuth from '../../hooks';
 
 const AddChannel = () => {
   const dispatch = useDispatch();
+  const auth = useAuth();
   const inputRef = useRef();
   const [addFailed, setAddFailed] = useState(false);
   const channels = useSelector((state) => state.channels.channels);
-  const token = useSelector((state) => state.auth.token);
   const channelNames = [];
   channels.forEach((channel) => channelNames.push(channel.name));
   const { t } = useTranslation();
@@ -44,7 +45,7 @@ const AddChannel = () => {
         if (channelNames.includes(newChannel.name)) {
           return;
         }
-        const res = await axios.post('/api/v1/channels', newChannel, { headers: { Authorization: `Bearer ${token}` } });
+        const res = await axios.post('/api/v1/channels', newChannel, { headers: auth.getAuthHeader() });
         const newChannelRes = res.data;
         if (res.status === 200) {
           dispatch(setActiveChannelId({ activeChannelId: newChannelRes.id }));

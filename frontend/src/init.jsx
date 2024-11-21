@@ -15,13 +15,27 @@ import { addChannel, removeChannel, renameChannel } from './slices/channelsSlice
 const AuthProvider = ({ children }) => {
   const [loggedIn, setLoggedIn] = useState(localStorage.getItem('userId'));
 
-  const logIn = () => setLoggedIn(true);
+  const logIn = (user) => {
+    localStorage.setItem('userId', JSON.stringify(user));
+    setLoggedIn(true);
+  };
+
   const logOut = () => {
     localStorage.removeItem('userId');
     setLoggedIn(false);
   };
 
-  const contextValue = useMemo(() => ({ loggedIn, logIn, logOut }), [loggedIn]);
+  const getAuthHeader = () => {
+    const userId = JSON.parse(localStorage.getItem('userId'));
+    if (userId && userId.token) {
+      return { Authorization: `Bearer ${userId.token}` };
+    }
+    return {};
+  };
+
+  const contextValue = useMemo(() => ({
+    loggedIn, logIn, logOut, getAuthHeader,
+  }), [loggedIn]);
 
   return (
     <AuthContext.Provider value={contextValue}>

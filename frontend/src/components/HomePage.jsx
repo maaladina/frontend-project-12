@@ -17,14 +17,7 @@ import RenameChannel from './modals/RenameChannel.jsx';
 import routes from '../routes.js';
 import 'react-toastify/dist/ReactToastify.css';
 import showToast from './toast.js';
-
-const getAuthHeader = () => {
-  const userId = JSON.parse(localStorage.getItem('userId'));
-  if (userId && userId.token) {
-    return { Authorization: `Bearer ${userId.token}` };
-  }
-  return {};
-};
+import useAuth from '../hooks/index.jsx';
 
 const Modal = () => {
   const modalType = useSelector((state) => state.modal.type);
@@ -53,15 +46,16 @@ const HomePage = () => {
     }
   });
   const dispatch = useDispatch();
+  const auth = useAuth();
   const inputRef = useRef();
   const { t } = useTranslation();
 
   useEffect(() => {
     const getChannels = async () => {
-      const newData = await axios.get(routes.channelsPath(), { headers: getAuthHeader() });
+      const newData = await axios.get(routes.channelsPath(), { headers: auth.getAuthHeader() });
       const newChannels = newData.data;
       dispatch(setChannels({ newChannels }));
-      const newData2 = await axios.get(routes.messagesPath(), { headers: getAuthHeader() });
+      const newData2 = await axios.get(routes.messagesPath(), { headers: auth.getAuthHeader() });
       const newMessages = newData2.data;
       dispatch(setMessages({ newMessages }));
       inputRef.current.focus();
@@ -81,7 +75,7 @@ const HomePage = () => {
           channelId: activeChannelId,
           username,
         };
-        await axios.post(routes.messagesPath(), newMessage, { headers: getAuthHeader() });
+        await axios.post(routes.messagesPath(), newMessage, { headers: auth.getAuthHeader() });
         formik.values.body = '';
         inputRef.current.select();
       } catch (e) {

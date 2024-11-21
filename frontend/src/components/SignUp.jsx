@@ -41,10 +41,9 @@ const SignUp = () => {
       setRegFailed(false);
       try {
         const res = await axios.post(routes.signUpPath(), values);
-        localStorage.setItem('userId', JSON.stringify(res.data));
         const user = res.data;
         dispatch(setUser({ user }));
-        auth.logIn();
+        auth.logIn(user);
         navigate('/');
       } catch (e) {
         if (e.response.status === 409) {

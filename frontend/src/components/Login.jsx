@@ -36,10 +36,9 @@ const Login = () => {
       setAuthFailed(false);
       try {
         const res = await axios.post(routes.loginPath(), values);
-        localStorage.setItem('userId', JSON.stringify(res.data));
         const user = res.data;
         dispatch(setUser({ user }));
-        auth.logIn();
+        auth.logIn(user);
         navigate(from);
       } catch (err) {
         formik.setSubmitting(false);

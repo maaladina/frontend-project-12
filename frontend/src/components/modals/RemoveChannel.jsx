@@ -1,25 +1,23 @@
 import React from 'react';
 import axios from 'axios';
 import { Modal, Button } from 'react-bootstrap';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { hideModal } from '../../slices/modalSlice';
 import routes from '../../routes';
 import showToast from '../toast';
+import useAuth from '../../hooks';
 
 const RemoveChannel = ({ item }) => {
   const dispatch = useDispatch();
-  const token = useSelector((state) => state.auth.token);
+  const auth = useAuth();
 
   const { t } = useTranslation();
 
   const handleRemove = async () => {
     try {
-      const res = await axios.delete(routes.channelPath(item.id), {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const { id } = item;
+      const res = await axios.delete(routes.channelPath(id), { headers: auth.getAuthHeader() });
       if (res.status === 200) {
         dispatch(hideModal());
         showToast('success', t('toast.removeChannel'));
