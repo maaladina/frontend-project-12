@@ -22,10 +22,6 @@ const PrivateRoute = ({ children }) => {
 };
 
 const App = () => {
-  document.documentElement.classList.add('h-100');
-  document.getElementById('root').classList.add('h-100');
-  document.body.classList.add('h-100');
-  document.body.classList.add('bg-light');
   return (
     <Router>
       <Routes>
