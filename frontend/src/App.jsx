@@ -11,13 +11,14 @@ import Login from './components/Login';
 import HomePage from './components/HomePage.jsx';
 import SignUp from './components/SignUp.jsx';
 import useAuth from './hooks/index.jsx';
+import routes from './routes.js';
 
 const PrivateRoute = ({ children }) => {
   const auth = useAuth();
   const location = useLocation();
 
   return (
-    auth.loggedIn ? children : <Navigate to="/login" state={{ from: location }} />
+    auth.loggedIn ? children : <Navigate to={routes.loginPagePath()} state={{ from: location }} />
   );
 };
 
@@ -25,16 +26,16 @@ const App = () => (
   <Router>
     <Routes>
       <Route
-        path="/"
+        path={routes.chatPagePath()}
         element={(
           <PrivateRoute>
             <HomePage />
           </PrivateRoute>
         )}
       />
-      <Route path="*" element={<NotFound />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/signup" element={<SignUp />} />
+      <Route path={routes.otherPagesPath()} element={<NotFound />} />
+      <Route path={routes.loginPagePath()} element={<Login />} />
+      <Route path={routes.signupPagePath()} element={<SignUp />} />
     </Routes>
   </Router>
 );
