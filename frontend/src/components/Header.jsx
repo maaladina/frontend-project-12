@@ -3,15 +3,16 @@ import { Button } from 'react-bootstrap';
 import { useLocation, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import useAuth from '../hooks/index.jsx';
+import routes from '../routes.js';
 
 const AuthButton = () => {
   const auth = useAuth();
   const location = useLocation();
   const { t } = useTranslation();
   return (
-    auth.loggedIn
+    auth.user
       ? <Button onClick={auth.logOut} className="btn btn-primary">{t('header.logOut')}</Button>
-      : <Button as={Link} to="/login" state={{ from: location }} className="btn btn-primary">{t('login.submit')}</Button>
+      : <Button as={Link} to={routes.loginPagePath} state={{ from: location }} className="btn btn-primary">{t('login.submit')}</Button>
   );
 };
 

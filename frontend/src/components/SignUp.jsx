@@ -3,10 +3,8 @@ import React, { useState } from 'react';
 import { useFormik } from 'formik';
 import { Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import * as Yup from 'yup';
 import { useTranslation } from 'react-i18next';
-import { setUser } from '../slices/authSlice.js';
 import useAuth from '../hooks/index.jsx';
 import signup from '../images/signUp.jpg';
 import routes from '../routes.js';
@@ -16,7 +14,6 @@ const SignUp = () => {
   const [regFailed, setRegFailed] = useState(false);
   const navigate = useNavigate();
   const auth = useAuth();
-  const dispatch = useDispatch();
   const { t } = useTranslation();
 
   const SignupSchema = Yup.object().shape({
@@ -42,7 +39,6 @@ const SignUp = () => {
       try {
         const res = await axios.post(routes.signUpPath(), values);
         const user = res.data;
-        dispatch(setUser({ user }));
         auth.logIn(user);
         navigate('/');
       } catch (e) {

@@ -3,10 +3,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useFormik } from 'formik';
 import { Button, Form } from 'react-bootstrap';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { ToastContainer } from 'react-toastify';
-import { setUser } from '../slices/authSlice.js';
 import useAuth from '../hooks/index.jsx';
 import login from '../images/hexletImage.jpg';
 import routes from '../routes.js';
@@ -19,7 +17,6 @@ const Login = () => {
   const location = useLocation();
   const { from } = location.state;
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const { t } = useTranslation();
 
@@ -37,7 +34,6 @@ const Login = () => {
       try {
         const res = await axios.post(routes.loginPath(), values);
         const user = res.data;
-        dispatch(setUser({ user }));
         auth.logIn(user);
         navigate(from);
       } catch (err) {

@@ -38,7 +38,6 @@ const HomePage = () => {
   const activeChannelId = useSelector((state) => state.channels.activeChannelId);
   const activeChannel = channels.find((channel) => channel.id === activeChannelId);
   const messages = useSelector((state) => state.messages.messages);
-  const username = useSelector((state) => state.auth.username);
   const activeMessages = [];
   messages.forEach((message) => {
     if (message.channelId === activeChannelId) {
@@ -47,6 +46,7 @@ const HomePage = () => {
   });
   const dispatch = useDispatch();
   const auth = useAuth();
+  const username = auth.user.username;
   const inputRef = useRef();
   const { t } = useTranslation();
 

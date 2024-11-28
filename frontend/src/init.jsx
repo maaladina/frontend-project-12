@@ -13,16 +13,17 @@ import { addMessage } from './slices/messagesSlice.js';
 import { addChannel, removeChannel, renameChannel } from './slices/channelsSlice.js';
 
 const AuthProvider = ({ children }) => {
-  const [loggedIn, setLoggedIn] = useState(localStorage.getItem('userId'));
+  const userData = localStorage.getItem('userId') ? JSON.parse(localStorage.getItem('userId')) : undefined;
+  const [user, setUser] = useState(userData);
 
-  const logIn = (user) => {
-    localStorage.setItem('userId', JSON.stringify(user));
-    setLoggedIn(true);
+  const logIn = (newUser) => {
+    localStorage.setItem('userId', JSON.stringify(newUser));
+    setUser(newUser);
   };
 
   const logOut = () => {
     localStorage.removeItem('userId');
-    setLoggedIn(false);
+    setUser(undefined);
   };
 
   const getAuthHeader = () => {
@@ -34,8 +35,8 @@ const AuthProvider = ({ children }) => {
   };
 
   const contextValue = useMemo(() => ({
-    loggedIn, logIn, logOut, getAuthHeader,
-  }), [loggedIn]);
+    user, logIn, logOut, getAuthHeader,
+  }), [user]);
 
   return (
     <AuthContext.Provider value={contextValue}>
