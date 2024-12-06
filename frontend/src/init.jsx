@@ -13,7 +13,7 @@ import { addMessage } from './slices/messagesSlice.js';
 import { addChannel, removeChannel, renameChannel } from './slices/channelsSlice.js';
 
 const AuthProvider = ({ children }) => {
-  const userData = localStorage.getItem('userId') ? JSON.parse(localStorage.getItem('userId')) : undefined;
+  const userData = JSON.parse(localStorage.getItem('userId'));
   const [user, setUser] = useState(userData);
 
   const logIn = (newUser) => {

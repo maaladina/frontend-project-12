@@ -37,7 +37,6 @@ const Login = () => {
         auth.logIn(user);
         navigate(from);
       } catch (err) {
-        formik.setSubmitting(false);
         console.log(err);
         if (err.isAxiosError && err.response.status === 401) {
           setAuthFailed(true);

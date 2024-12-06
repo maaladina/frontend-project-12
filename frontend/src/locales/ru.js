@@ -46,6 +46,8 @@ export default {
     },
     toast: {
       networkError: 'Ошибка соединения',
+      unknownError: 'Неизвестная ошибка',
+      authorizeError: 'Ошибка авторизации',
       addChannel: 'Канал создан',
       removeChannel: 'Канал удалён',
       renameChannel: 'Канал переименован',
