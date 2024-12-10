@@ -38,8 +38,13 @@ const Login = () => {
         navigate(from);
       } catch (err) {
         console.log(err);
+        if (!err.isAxiosError) {
+          showToast('error', t('toast.unknownError'));
+          return;
+        }
         if (err.isAxiosError && err.response.status === 401) {
           setAuthFailed(true);
+          showToast('error', t('toast.authorizeError'));
           inputRef.current.select();
           return;
         }

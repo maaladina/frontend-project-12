@@ -53,9 +53,19 @@ const AddChannel = () => {
           showToast('success', t('toast.addChannel'));
         }
       } catch (e) {
-        setAddFailed(true);
         console.log(e);
+        setAddFailed(true);
+        if (!e.isAxiosError) {
+          showToast('error', t('toast.unknownError'));
+          return;
+        }
+        if (e.isAxiosError && e.response.status === 401) {
+          showToast('error', t('toast.authorizeError'));
+          inputRef.current.select();
+          return;
+        }
         showToast('error', t('toast.networkError'));
+        throw e;
       }
     },
 

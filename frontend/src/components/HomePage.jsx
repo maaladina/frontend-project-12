@@ -18,6 +18,7 @@ import routes from '../routes.js';
 import 'react-toastify/dist/ReactToastify.css';
 import showToast from './toast.js';
 import useAuth from '../hooks/index.jsx';
+import { use } from 'i18next';
 
 const Modal = () => {
   const modalType = useSelector((state) => state.modal.type);
@@ -52,6 +53,7 @@ const HomePage = () => {
 
   useEffect(() => {
     const getChannels = async () => {
+      try{
       const newData = await axios.get(routes.channelsPath(), { headers: auth.getAuthHeader() });
       const newChannels = newData.data;
       dispatch(setChannels({ newChannels }));
@@ -59,6 +61,20 @@ const HomePage = () => {
       const newMessages = newData2.data;
       dispatch(setMessages({ newMessages }));
       inputRef.current.focus();
+      } catch (e) {
+        console.log(e);
+        if (!e.isAxiosError) {
+          showToast('error', t('toast.unknownError'));
+          return;
+        }
+        if (e.isAxiosError && e.response.status === 401) {
+          auth.logOut()
+          showToast('error', t('toast.authorizeError'));
+          return;
+        }
+        showToast('error', t('toast.networkError'));
+        throw e;
+      }
     };
     getChannels();
   }, []);

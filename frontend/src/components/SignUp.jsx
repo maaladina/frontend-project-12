@@ -42,11 +42,18 @@ const SignUp = () => {
         auth.logIn(user);
         navigate('/');
       } catch (e) {
-        if (e.response.status === 409) {
-          setRegFailed(true);
-        }
         console.log(e);
+        if (!e.isAxiosError) {
+          showToast('error', t('toast.unknownError'));
+          return;
+        }
+        if (e.isAxiosError && e.response.status === 409) {
+          showToast('error', t('toast.authorizeError'));
+          setRegFailed(true);
+          return;
+        }
         showToast('error', t('toast.networkError'));
+        throw e;
       }
     },
   });

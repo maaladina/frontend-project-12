@@ -50,9 +50,19 @@ const RenameChannel = ({ item }) => {
           showToast('success', t('toast.renameChannel'));
         }
       } catch (e) {
-        setRenameFailed(true);
         console.log(e);
+        setRenameFailed(true);
+        if (!e.isAxiosError) {
+          showToast('error', t('toast.unknownError'));
+          return;
+        }
+        if (e.isAxiosError && e.response.status === 401) {
+          showToast('error', t('toast.authorizeError'));
+          inputRef.current.select();
+          return;
+        }
         showToast('error', t('toast.networkError'));
+        throw e;
       }
     },
 

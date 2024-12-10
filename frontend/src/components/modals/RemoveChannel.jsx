@@ -23,7 +23,17 @@ const RemoveChannel = ({ item }) => {
         showToast('success', t('toast.removeChannel'));
       }
     } catch (e) {
+      console.log(e);
+      if (!e.isAxiosError) {
+        showToast('error', t('toast.unknownError'));
+        return;
+      }
+      if (e.isAxiosError && e.response.status === 401) {
+        showToast('error', t('toast.authorizeError'));
+        return;
+      }
       showToast('error', t('toast.networkError'));
+      throw e;
     }
   };
 
