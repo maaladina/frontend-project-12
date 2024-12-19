@@ -146,7 +146,7 @@ const SignUp = () => {
 
                       </Form.Group>
 
-                      <button type="submit" className="w-100 btn btn-outline-primary" disabled={!formik.isValid && !formik.isSubmitting}>{t('signUp.submit')}</button>
+                      <button type="submit" className="w-100 btn btn-outline-primary">{t('signUp.submit')}</button>
                     </Form>
 
                   </div>
