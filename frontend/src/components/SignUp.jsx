@@ -40,7 +40,7 @@ const SignUp = () => {
         const res = await axios.post(routes.signUpPath(), values);
         const user = res.data;
         auth.logIn(user);
-        navigate('/');
+        navigate(routes.chatPagePath());
       } catch (e) {
         console.log(e);
         if (!e.isAxiosError) {
@@ -64,7 +64,7 @@ const SignUp = () => {
         <div className="d-flex flex-column h-100">
           <nav className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
             <div className="container">
-              <a className="navbar-brand" href="/">{t('header.title')}</a>
+              <a className="navbar-brand" href={routes.chatPagePath()}>{t('header.title')}</a>
             </div>
           </nav>
           <div className="container-fluid h-100">

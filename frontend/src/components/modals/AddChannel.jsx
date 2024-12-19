@@ -10,6 +10,7 @@ import { hideModal } from '../../slices/modalSlice';
 import { setActiveChannelId } from '../../slices/channelsSlice';
 import showToast from '../toast';
 import useAuth from '../../hooks';
+import routes from '../../routes';
 
 const AddChannel = () => {
   const dispatch = useDispatch();
@@ -45,7 +46,11 @@ const AddChannel = () => {
         if (channelNames.includes(newChannel.name)) {
           return;
         }
-        const res = await axios.post('/api/v1/channels', newChannel, { headers: auth.getAuthHeader() });
+        const res = await axios.post(
+          routes.channelsPath(),
+          newChannel,
+          { headers: auth.getAuthHeader() },
+        );
         const newChannelRes = res.data;
         if (res.status === 200) {
           dispatch(setActiveChannelId({ activeChannelId: newChannelRes.id }));

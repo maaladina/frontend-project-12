@@ -21,7 +21,7 @@ const Header = () => {
   return (
     <nav className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
       <div className="container">
-        <a className="navbar-brand" href="/">{t('header.title')}</a>
+        <a className="navbar-brand" href={routes.chatPagePath()}>{t('header.title')}</a>
         <AuthButton />
       </div>
     </nav>

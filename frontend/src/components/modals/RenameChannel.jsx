@@ -9,6 +9,7 @@ import filter from 'leo-profanity';
 import { hideModal } from '../../slices/modalSlice';
 import showToast from '../toast';
 import useAuth from '../../hooks';
+import routes from '../../routes';
 
 const RenameChannel = ({ item }) => {
   const dispatch = useDispatch();
@@ -44,7 +45,11 @@ const RenameChannel = ({ item }) => {
         if (channelNames.includes(editedChannel.name)) {
           return;
         }
-        const res = await axios.patch(`/api/v1/channels/${item.id}`, editedChannel, { headers: auth.getAuthHeader() });
+        const res = await axios.patch(
+          routes.channelPath(item.id),
+          editedChannel,
+          { headers: auth.getAuthHeader() },
+        );
         if (res.status === 200) {
           dispatch(hideModal());
           showToast('success', t('toast.renameChannel'));
