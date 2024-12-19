@@ -28,6 +28,8 @@ export default {
       messagesCounter_one: '{{count}} сообщение',
       messagesCounter_few: '{{count}} сообщения',
       messagesCounter_many: '{{count}} сообщений',
+      newMessage: 'Новое сообщение',
+      enterMessage: 'Введите сообщение...',
     },
     modals: {
       addChannel: 'Добавить канал',

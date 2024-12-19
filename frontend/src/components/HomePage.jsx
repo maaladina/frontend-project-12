@@ -140,8 +140,8 @@ const HomePage = () => {
                             type="text"
                             onChange={formik.handleChange}
                             name="body"
-                            aria-label="Новое сообщение"
-                            placeholder="Введите сообщение..."
+                            aria-label={t('chat.newMessage')}
+                            placeholder={t('chat.enterMessage')}
                             className="border-0 p-0 ps-2 form-control"
                             ref={inputRef}
                             isInvalid={sendFailed}

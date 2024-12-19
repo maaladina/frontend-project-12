@@ -11,7 +11,7 @@ const NotFound = () => {
         <div className="d-flex flex-column h-100">
           <Header />
           <div className="text-center">
-            <img alt="Страница не найдена" className="img-fluid h-25" src={notFound} />
+            <img alt={t('notFound.pageNotFound')} className="img-fluid h-25" src={notFound} />
             <h1 className="h4 text-muted">{t('notFound.pageNotFound')}</h1>
             <p className="text-muted">
               {t('notFound.butYouCan')}

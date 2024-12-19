@@ -69,7 +69,7 @@ const Login = () => {
                 <div className="card shadow-sm">
                   <div className="card-body row p-5">
                     <div className="col-12 col-md-6 d-flex align-items-center justify-content-center">
-                      <img src={login} className="rounded-circle" alt="Войти" />
+                      <img src={login} className="rounded-circle" alt={t('login.title')} />
                     </div>
 
                     <Form onSubmit={formik.handleSubmit} className="col-12 col-md-6 mt-3 mt-md-0">
@@ -80,7 +80,7 @@ const Login = () => {
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                             value={formik.values.username}
-                            placeholder="Ваш ник"
+                            placeholder={t('login.name')}
                             name="username"
                             id="username"
                             autoComplete="username"
@@ -96,7 +96,7 @@ const Login = () => {
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                             value={formik.values.password}
-                            placeholder="Пароль"
+                            placeholder={t('login.password')}
                             name="password"
                             id="password"
                             autoComplete="current-password"

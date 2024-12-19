@@ -73,7 +73,7 @@ const SignUp = () => {
                 <div className="card shadow-sm">
                   <div className="card-body d-flex flex-column flex-md-row justify-content-around align-items-center p-5">
                     <div>
-                      <img src={signup} className="rounded-circle" alt="Регистрация" />
+                      <img src={signup} className="rounded-circle" alt={t('signUp.title')} />
                     </div>
 
                     <Form onSubmit={formik.handleSubmit} className="w-50">
@@ -81,7 +81,7 @@ const SignUp = () => {
                       <Form.Group className="form-floating mb-3">
                         <Form.Control
                           type="text"
-                          placeholder="От 3 до 20 символов"
+                          placeholder={t('signUp.name')}
                           name="username"
                           autoComplete="username"
                           id="username"
@@ -99,7 +99,7 @@ const SignUp = () => {
 
                       <Form.Group className="form-floating mb-3">
                         <Form.Control
-                          placeholder="Не менее 6 символов"
+                          placeholder={t('signUp.password')}
                           name="password"
                           aria-describedby="passwordHelpBlock"
                           autoComplete="new-password"
@@ -119,7 +119,7 @@ const SignUp = () => {
 
                       <Form.Group className="form-floating mb-4">
                         <Form.Control
-                          placeholder="Пароли должны совпадать"
+                          placeholder={t('signUp.confirmPassword')}
                           name="confirmPassword"
                           autoComplete="new-password"
                           type="password"
