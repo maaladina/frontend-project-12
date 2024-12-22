@@ -5,6 +5,7 @@ import React, { useState, useMemo } from 'react';
 import { io } from 'socket.io-client';
 import filter from 'leo-profanity';
 import { Provider } from 'react-redux';
+import { ToastContainer } from 'react-toastify';
 import App from './App';
 import resources from './locales/index.js';
 import AuthContext from './contexts/index.jsx';
@@ -91,6 +92,7 @@ const init = async () => {
           <Provider store={store}>
             <AuthProvider>
               <App />
+              <ToastContainer />
             </AuthProvider>
           </Provider>
         </I18nextProvider>

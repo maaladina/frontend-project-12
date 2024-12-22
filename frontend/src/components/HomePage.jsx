@@ -5,7 +5,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 import { Button, Form } from 'react-bootstrap';
-import { ToastContainer } from 'react-toastify';
 import filter from 'leo-profanity';
 import Header from './Header';
 import { setChannels } from '../slices/channelsSlice.js';
@@ -160,9 +159,6 @@ const HomePage = () => {
                 </div>
               </div>
             </div>
-          </div>
-          <div className="Toastify">
-            <ToastContainer />
           </div>
         </div>
       </div>

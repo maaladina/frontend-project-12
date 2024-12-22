@@ -20,7 +20,6 @@ const NotFound = () => {
             </p>
           </div>
         </div>
-        <div className="Toastify" />
       </div>
     </div>
   );

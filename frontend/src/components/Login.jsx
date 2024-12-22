@@ -122,9 +122,6 @@ const Login = () => {
             </div>
           </div>
         </div>
-        <div className="Toastify">
-          <ToastContainer />
-        </div>
       </div>
     </div>
   );
