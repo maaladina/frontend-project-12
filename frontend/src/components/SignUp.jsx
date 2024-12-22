@@ -12,7 +12,6 @@ import showToast from './toast.js';
 
 const SignUp = () => {
   const [regFailed, setRegFailed] = useState(false);
-  const [submited, setSubmited] = useState(false);
   const navigate = useNavigate();
   const auth = useAuth();
   const { t } = useTranslation();
@@ -37,7 +36,6 @@ const SignUp = () => {
     validationSchema: SignupSchema,
     onSubmit: async (values) => {
       setRegFailed(false);
-      setSubmited(true);
       try {
         const res = await axios.post(routes.signUpPath(), values);
         const user = res.data;
@@ -57,7 +55,6 @@ const SignUp = () => {
         showToast('error', t('toast.networkError'));
         throw e;
       }
-      setSubmited(false);
     },
   });
 
@@ -149,7 +146,7 @@ const SignUp = () => {
 
                       </Form.Group>
 
-                      <button type="submit" className="w-100 btn btn-outline-primary" disabled={submited}>{t('signUp.submit')}</button>
+                      <button type="submit" className="w-100 btn btn-outline-primary" disabled={formik.isSubmitting}>{t('signUp.submit')}</button>
                     </Form>
 
                   </div>
