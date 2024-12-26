@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 import { Button, Form } from 'react-bootstrap';
 import filter from 'leo-profanity';
+import { toast } from 'react-toastify';
 import Header from './Header';
 import { setChannels } from '../slices/channelsSlice.js';
 import { setMessages } from '../slices/messagesSlice.js';
@@ -15,9 +16,7 @@ import RemoveChannel from './modals/RemoveChannel.jsx';
 import RenameChannel from './modals/RenameChannel.jsx';
 import routes from '../routes.js';
 import 'react-toastify/dist/ReactToastify.css';
-import showToast from './toast.js';
 import useAuth from '../hooks/index.jsx';
-import { use } from 'i18next';
 
 const Modal = () => {
   const modalType = useSelector((state) => state.modal.type);
@@ -63,15 +62,15 @@ const HomePage = () => {
       } catch (e) {
         console.log(e);
         if (!e.isAxiosError) {
-          showToast('error', t('toast.unknownError'));
+          toast.error(t('toast.unknownError'));
           return;
         }
         if (e.isAxiosError && e.response.status === 401) {
           auth.logOut()
-          showToast('error', t('toast.authorizeError'));
+          toast.error(t('toast.authorizeError'));
           return;
         }
-        showToast('error', t('toast.networkError'));
+        toast.error(t('toast.networkError'));
         throw e;
       }
     };
@@ -96,7 +95,7 @@ const HomePage = () => {
       } catch (e) {
         setSendFailed(true);
         console.log(e);
-        showToast('error', t('toast.networkError'));
+        toast.error(t('toast.networkError'));
       }
     },
   });

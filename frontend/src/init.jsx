@@ -92,7 +92,14 @@ const init = async () => {
           <Provider store={store}>
             <AuthProvider>
               <App />
-              <ToastContainer />
+              <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                closeOnClick
+                pauseOnHover
+                draggable
+              />
             </AuthProvider>
           </Provider>
         </I18nextProvider>

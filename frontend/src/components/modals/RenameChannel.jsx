@@ -6,8 +6,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import * as Yup from 'yup';
 import { useTranslation } from 'react-i18next';
 import filter from 'leo-profanity';
+import { toast } from 'react-toastify';
 import { hideModal } from '../../slices/modalSlice';
-import showToast from '../toast';
 import useAuth from '../../hooks';
 import routes from '../../routes';
 
@@ -52,21 +52,21 @@ const RenameChannel = ({ item }) => {
         );
         if (res.status === 200) {
           dispatch(hideModal());
-          showToast('success', t('toast.renameChannel'));
+          toast.success(t('toast.renameChannel'));
         }
       } catch (e) {
         console.log(e);
         setRenameFailed(true);
         if (!e.isAxiosError) {
-          showToast('error', t('toast.unknownError'));
+          toast.error(t('toast.unknownError'));
           return;
         }
         if (e.isAxiosError && e.response.status === 401) {
-          showToast('error', t('toast.authorizeError'));
+          toast.error(t('toast.authorizeError'));
           inputRef.current.select();
           return;
         }
-        showToast('error', t('toast.networkError'));
+        toast.error(t('toast.networkError'));
         throw e;
       }
     },

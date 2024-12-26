@@ -5,10 +5,10 @@ import { Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import useAuth from '../hooks/index.jsx';
 import signup from '../images/signUp.jpg';
 import routes from '../routes.js';
-import showToast from './toast.js';
 
 const SignUp = () => {
   const [regFailed, setRegFailed] = useState(false);
@@ -44,15 +44,15 @@ const SignUp = () => {
       } catch (e) {
         console.log(e);
         if (!e.isAxiosError) {
-          showToast('error', t('toast.unknownError'));
+          toast.error(t('toast.unknownError'));
           return;
         }
         if (e.isAxiosError && e.response.status === 409) {
-          showToast('error', t('toast.authorizeError'));
+          toast.error(t('toast.authorizeError'));
           setRegFailed(true);
           return;
         }
-        showToast('error', t('toast.networkError'));
+        toast.error(t('toast.networkError'));
         throw e;
       }
     },

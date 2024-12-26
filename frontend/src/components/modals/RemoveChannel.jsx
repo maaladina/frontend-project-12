@@ -3,9 +3,9 @@ import axios from 'axios';
 import { Modal, Button } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import { hideModal } from '../../slices/modalSlice';
 import routes from '../../routes';
-import showToast from '../toast';
 import useAuth from '../../hooks';
 
 const RemoveChannel = ({ item }) => {
@@ -20,19 +20,19 @@ const RemoveChannel = ({ item }) => {
       const res = await axios.delete(routes.channelPath(id), { headers: auth.getAuthHeader() });
       if (res.status === 200) {
         dispatch(hideModal());
-        showToast('success', t('toast.removeChannel'));
+        toast.success(t('toast.removeChannel'));
       }
     } catch (e) {
       console.log(e);
       if (!e.isAxiosError) {
-        showToast('error', t('toast.unknownError'));
+        toast.error(t('toast.unknownError'));
         return;
       }
       if (e.isAxiosError && e.response.status === 401) {
-        showToast('error', t('toast.authorizeError'));
+        toast.error(t('toast.authorizeError'));
         return;
       }
-      showToast('error', t('toast.networkError'));
+      toast.error(t('toast.networkError'));
       throw e;
     }
   };

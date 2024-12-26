@@ -4,10 +4,10 @@ import { useFormik } from 'formik';
 import { Button, Form } from 'react-bootstrap';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import useAuth from '../hooks/index.jsx';
 import login from '../images/hexletImage.jpg';
 import routes from '../routes.js';
-import showToast from './toast.js';
 
 const Login = () => {
   const auth = useAuth();
@@ -38,16 +38,16 @@ const Login = () => {
       } catch (err) {
         console.log(err);
         if (!err.isAxiosError) {
-          showToast('error', t('toast.unknownError'));
+          toast.error(t('toast.unknownError'));
           return;
         }
         if (err.isAxiosError && err.response.status === 401) {
           setAuthFailed(true);
-          showToast('error', t('toast.authorizeError'));
+          toast.error(t('toast.authorizeError'));
           inputRef.current.select();
           return;
         }
-        showToast('error', t('toast.networkError'));
+        toast.error(t('toast.networkError'));
         throw err;
       }
     },
