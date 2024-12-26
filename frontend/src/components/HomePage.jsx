@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
@@ -45,20 +44,20 @@ const HomePage = () => {
   });
   const dispatch = useDispatch();
   const auth = useAuth();
-  const username = auth.user.username;
+  const { username } = auth.user;
   const inputRef = useRef();
   const { t } = useTranslation();
 
   useEffect(() => {
     const getChannels = async () => {
-      try{
-      const newData = await axios.get(routes.channelsPath(), { headers: auth.getAuthHeader() });
-      const newChannels = newData.data;
-      dispatch(setChannels({ newChannels }));
-      const newData2 = await axios.get(routes.messagesPath(), { headers: auth.getAuthHeader() });
-      const newMessages = newData2.data;
-      dispatch(setMessages({ newMessages }));
-      inputRef.current.focus();
+      try {
+        const newData = await axios.get(routes.channelsPath(), { headers: auth.getAuthHeader() });
+        const newChannels = newData.data;
+        dispatch(setChannels({ newChannels }));
+        const newData2 = await axios.get(routes.messagesPath(), { headers: auth.getAuthHeader() });
+        const newMessages = newData2.data;
+        dispatch(setMessages({ newMessages }));
+        inputRef.current.focus();
       } catch (e) {
         console.log(e);
         if (!e.isAxiosError) {
@@ -66,7 +65,7 @@ const HomePage = () => {
           return;
         }
         if (e.isAxiosError && e.response.status === 401) {
-          auth.logOut()
+          auth.logOut();
           toast.error(t('toast.authorizeError'));
           return;
         }
@@ -75,6 +74,7 @@ const HomePage = () => {
       }
     };
     getChannels();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const formik = useFormik({
