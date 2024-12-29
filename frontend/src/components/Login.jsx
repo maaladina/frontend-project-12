@@ -105,7 +105,7 @@ const Login = () => {
                           <Form.Label htmlFor="password">{t('login.password')}</Form.Label>
                           <Form.Control.Feedback type="invalid">{t('errors.incorrect')}</Form.Control.Feedback>
                         </Form.Group>
-                        <Button type="submit" className="w-100 mb-3 btn btn-outline-primary" disabled={!formik.isValid && !formik.isSubmitting} variant="outline-primary">{t('login.submit')}</Button>
+                        <Button type="submit" className="w-100 mb-3 btn btn-outline-primary" disabled={formik.isSubmitting} variant="outline-primary">{t('login.submit')}</Button>
                       </fieldset>
                     </Form>
                   </div>

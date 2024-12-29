@@ -17,11 +17,9 @@ const RemoveChannel = ({ item }) => {
   const handleRemove = async () => {
     try {
       const { id } = item;
-      const res = await axios.delete(routes.channelPath(id), { headers: auth.getAuthHeader() });
-      if (res.status === 200) {
-        dispatch(hideModal());
-        toast.success(t('toast.removeChannel'));
-      }
+      await axios.delete(routes.channelPath(id), { headers: auth.getAuthHeader() });
+      dispatch(hideModal());
+      toast.success(t('toast.removeChannel'));
     } catch (e) {
       console.log(e);
       if (!e.isAxiosError) {

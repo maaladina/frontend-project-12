@@ -45,15 +45,13 @@ const RenameChannel = ({ item }) => {
         if (channelNames.includes(editedChannel.name)) {
           return;
         }
-        const res = await axios.patch(
+        await axios.patch(
           routes.channelPath(item.id),
           editedChannel,
           { headers: auth.getAuthHeader() },
         );
-        if (res.status === 200) {
-          dispatch(hideModal());
-          toast.success(t('toast.renameChannel'));
-        }
+        dispatch(hideModal());
+        toast.success(t('toast.renameChannel'));
       } catch (e) {
         console.log(e);
         setRenameFailed(true);
@@ -98,7 +96,7 @@ const RenameChannel = ({ item }) => {
             </Form.Control.Feedback>
             <div className="d-flex justify-content-end">
               <button type="button" className="me-2 btn btn-secondary" onClick={() => dispatch(hideModal())}>{t('modals.cancel')}</button>
-              <button type="submit" className="btn btn-primary" disabled={!formik.isValid && !formik.isSubmitting}>{t('modals.send')}</button>
+              <button type="submit" className="btn btn-primary" disabled={formik.isSubmitting}>{t('modals.send')}</button>
             </div>
           </Form.Group>
         </Form>

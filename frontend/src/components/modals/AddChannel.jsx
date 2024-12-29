@@ -52,11 +52,9 @@ const AddChannel = () => {
           { headers: auth.getAuthHeader() },
         );
         const newChannelRes = res.data;
-        if (res.status === 200) {
-          dispatch(setActiveChannelId({ activeChannelId: newChannelRes.id }));
-          dispatch(hideModal());
-          toast.success(t('toast.addChannel'));
-        }
+        dispatch(setActiveChannelId({ activeChannelId: newChannelRes.id }));
+        dispatch(hideModal());
+        toast.success(t('toast.addChannel'));
       } catch (e) {
         console.log(e);
         setAddFailed(true);
@@ -101,7 +99,7 @@ const AddChannel = () => {
             </Form.Control.Feedback>
             <div className="d-flex justify-content-end">
               <button type="button" className="me-2 btn btn-secondary" onClick={() => dispatch(hideModal())}>{t('modals.cancel')}</button>
-              <button type="submit" className="btn btn-primary" disabled={!formik.isValid && !formik.isSubmitting}>{t('modals.send')}</button>
+              <button type="submit" className="btn btn-primary" disabled={formik.isSubmitting}>{t('modals.send')}</button>
             </div>
           </Form.Group>
         </Form>
